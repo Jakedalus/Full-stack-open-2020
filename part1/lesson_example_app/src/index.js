@@ -16,6 +16,8 @@ const App = () => {
   // const a = 10;
   // const b = 20;
 
+  //some comment 
+
   const name = 'Peter';
   const age = 10;
 
