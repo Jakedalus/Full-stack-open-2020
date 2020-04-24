@@ -51,33 +51,58 @@ import ReactDOM from 'react-dom';
 
 
 ///// COUNTER WITH STATE
-const Display = ({counter}) => (
-  <div>{counter}</div>
-);
+// const Display = ({counter}) => (
+//   <div>{counter}</div>
+// );
 
-const Button = ({handleClick, text}) => (
-  <button onClick={handleClick}>
-    {text}
-  </button>
-);
+// const Button = ({handleClick, text}) => (
+//   <button onClick={handleClick}>
+//     {text}
+//   </button>
+// );
 
+// const App = props => {
+//   const [ counter, setCounter ] = useState(0);
+
+//   // setTimeout(() => setCounter(counter + 1), 1000);
+
+//   const increaseByOne = () => setCounter(counter + 1);
+//   const decreaseByOne = () => setCounter(counter - 1);
+//   const setToZero = () => setCounter(0);
+
+//   return (
+//     <>
+//       <Display counter={counter} />
+//       <Button handleClick={decreaseByOne} text={'-'} />
+//       <Button handleClick={increaseByOne} text={'+'} />
+//       <Button handleClick={setToZero} text={'reset'} />
+//     </>
+//   );
+// }
+
+
+///// MORE COMPLEX STATE
 const App = props => {
-  const [ counter, setCounter ] = useState(0);
+  const [clicks, setClicks] = useState({
+    left: 0, right: 0
+  });
 
-  // setTimeout(() => setCounter(counter + 1), 1000);
+  const handleLeftClick = () => {
+    setClicks({...clicks, left: clicks.left + 1});
+  };
 
-  const increaseByOne = () => setCounter(counter + 1);
-  const decreaseByOne = () => setCounter(counter - 1);
-  const setToZero = () => setCounter(0);
+  const handleRightClick = () => {
+    setClicks({...clicks, right: clicks.right + 1});
+  };
 
   return (
-    <>
-      <Display counter={counter} />
-      <Button handleClick={decreaseByOne} text={'-'} />
-      <Button handleClick={increaseByOne} text={'+'} />
-      <Button handleClick={setToZero} text={'reset'} />
-    </>
+    <div>
+      {clicks.left}
+      <button onClick={handleLeftClick}>left</button>
+      {clicks.right}
+      <button onClick={handleRightClick}>right</button>
+    </div>
   );
-}
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
