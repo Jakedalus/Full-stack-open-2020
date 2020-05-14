@@ -21,13 +21,19 @@ const App = (props) => {
     copy[selected] += 1;
     setVotes(copy);
   };
+
+  const mostVotedAnecdoteIndex = votes.reduce((acc, cur, index) => cur > votes[acc] ? index : acc, 0);
   
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{props.anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <Button text='vote' handleClick={handleClickVote} />
       <Button text='next anecdote' handleClick={handleClickRandom} />
+
+      <h2>Anecdote with the most votes</h2>
+      <p>{anecdotes[mostVotedAnecdoteIndex]}</p>
     </div>
   );
 };
