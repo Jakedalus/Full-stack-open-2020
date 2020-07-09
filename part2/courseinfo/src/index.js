@@ -88,7 +88,7 @@ const App = () => {
 
 
   return (
-    <div>}
+    <div>
       {courses.map(course => <Course course={course} />)}
     </div>
   );
