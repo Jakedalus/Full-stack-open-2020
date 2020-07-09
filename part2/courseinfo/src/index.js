@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const Header = ({ course }) => {
-  return <h1>{course.name}</h1>;
+const Header = ({ name }) => {
+  return <h1>{name}</h1>;
 };
 
 const Total = ({ course }) => {
@@ -21,21 +21,21 @@ const Part = (props) => {
   );
 };
 
-const Content = ({ course }) => {
+const Content = ({ parts }) => {
   return (
     <div>
-      <Part part={course.parts[0]} />
-      <Part part={course.parts[1]} />
-      <Part part={course.parts[2]} />
+      {parts.map((part) => (
+        <Part part={part} />
+      ))}
     </div>
   );
 };
 
 const Course = ({ course }) => (
   <div>
-    <Header course={course} />
-    <Content course={course} />
-    <Total course={course} />
+    <Header name={course.name} />
+    <Content parts={course.parts} />
+    {/* <Total course={course} /> */}
   </div>
 );
 
