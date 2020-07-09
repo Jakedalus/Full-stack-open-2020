@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import PersonList from './PersonList'
+import Filter from  './Filter'
+import PersonForm from './PersonForm'
 
 const App = () => {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas', number: '040-123456' },
@@ -19,6 +22,7 @@ const App = () => {
         const newPerson = {name: newName, number: newNumber};
         setPersons(persons.concat(newPerson));
         setNewName('');
+        setNewNumber('');
       }
       
     }
@@ -40,24 +44,17 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
 
-      <h3>Search phonebook</h3>
-      <input value={search} onChange={handleSearch} />
+      <Filter search={search} handleSearch={handleSearch} />
 
-      <h3>Add a new entry</h3>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        {/* <div>debug: {newName}</div> */}
-        <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <div>
-        {persons.filter(person => RegExp(search, 'i').test(person.name)).map(person => <p key={person.name}>{person.name}, {person.number}</p>)}
-      </div>
+      <PersonForm 
+        addName={addName}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
+      
+      <PersonList search={search} persons={persons} />
     </div>
   );
 };
