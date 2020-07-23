@@ -62,8 +62,8 @@ const DisplayCountry = ({ country }) => {
 			{weather && (
 				<div>
 					<h3>Weather at {country.capital}</h3>
-					<p>Temperature:{weather.main.temp}</p>
-					<p>Feels Like:{weather.main.feels_like}</p>
+					<p>Temperature:{weather.main.temp} ºF</p>
+					<p>Feels Like:{weather.main.feels_like} ºF</p>
 					<p>Current conditions:</p>
 					<ul style={{ padding: '0' }}>
 						{weather.weather.map(w => (
