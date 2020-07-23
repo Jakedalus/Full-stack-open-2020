@@ -44,7 +44,7 @@ function App() {
 			results.length > 1 && (
 				<ul id='countries'>
 					{results.map(country => (
-						<li>
+						<li key={country.alpha3Code}>
 							{country.name}
 							<button onClick={() => handleShow(country)}>
 								show
