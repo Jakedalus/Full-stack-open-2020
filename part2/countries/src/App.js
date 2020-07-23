@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import DisplayCountry from './DisplayCountry';
 
 function App() {
 	const [ search, setSearch ] = useState('');
 	const [ countries, setCountries ] = useState([]);
+	const [ showCountry, setShowCountry ] = useState('');
 
 	useEffect(() => {
 		axios
@@ -15,6 +17,10 @@ function App() {
 
 	function handleChange(event) {
 		setSearch(event.target.value);
+	}
+
+	function handleShow(country) {
+		setShowCountry(country);
 	}
 
 	const results = countries.filter(country =>
@@ -37,27 +43,23 @@ function App() {
 			{results.length <= 10 &&
 			results.length > 1 && (
 				<ul id='countries'>
-					{results.map(country => <li>{country.name}</li>)}
+					{results.map(country => (
+						<li>
+							{country.name}
+							<button onClick={() => handleShow(country)}>
+								show
+							</button>
+						</li>
+					))}
 				</ul>
 			)}
 
-			{results.length === 1 && (
-				<div>
-					<h2>{results[0].name}</h2>
-					<p>Capital: {results[0].capital}</p>
-					<p>Population: {results[0].population}</p>
-					<p>Languages:</p>
-					<ul>
-						{results[0].languages.map(language => (
-							<li>{language.name}</li>
-						))}
-					</ul>
-					<img
-						src={results[0].flag}
-						alt={`${results[0].name}'s flag`}
-						width='350px'
-					/>
-				</div>
+			{(results.length === 1 || showCountry) && (
+				<DisplayCountry
+					country={
+						results.length === 1 ? results[0] : showCountry
+					}
+				/>
 			)}
 		</div>
 	);
