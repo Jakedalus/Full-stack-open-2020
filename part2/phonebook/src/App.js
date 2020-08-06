@@ -4,6 +4,8 @@ import PersonList from './PersonList';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 
+const baseUrl = 'http://localhost:3001/persons';
+
 const App = () => {
 	const [ persons, setPersons ] = useState([]);
 	const [ newName, setNewName ] = useState('');
@@ -11,12 +13,10 @@ const App = () => {
 	const [ search, setSearch ] = useState('');
 
 	useEffect(() => {
-		axios
-			.get('http://localhost:3001/persons')
-			.then(result => {
-				console.log(result);
-				setPersons(result.data);
-			});
+		axios.get(baseUrl).then(result => {
+			console.log(result);
+			setPersons(result.data);
+		});
 	}, []);
 
 	const addName = event => {
@@ -31,10 +31,14 @@ const App = () => {
 				);
 			} else {
 				const newPerson = {
-					name: newName,
-					number: newNumber
+					name   : newName,
+					number : newNumber
 				};
-				setPersons(persons.concat(newPerson));
+
+				axios.post(baseUrl, newPerson).then(response => {
+					setPersons(persons.concat(response.data));
+				});
+
 				setNewName('');
 				setNewNumber('');
 			}
