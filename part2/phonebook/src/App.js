@@ -45,11 +45,18 @@ const App = () => {
 	};
 
 	const deleteNumber = person => {
-		console.log('deleteNumber', person);
-		personService.deletePerson(person).then(response => {
-			// console.log('Deleted', response);
-			setPersons(persons.filter(p => p.id !== person.id));
-		});
+		const userIsSure = window.confirm(
+			`Are you sure you want to delete ${person.name}?`
+		);
+
+		console.log('deleteNumber', person, userIsSure);
+
+		if (userIsSure) {
+			personService.deletePerson(person).then(response => {
+				// console.log('Deleted', response);
+				setPersons(persons.filter(p => p.id !== person.id));
+			});
+		}
 	};
 
 	const handleNameChange = event => {
