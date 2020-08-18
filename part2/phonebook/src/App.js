@@ -44,6 +44,14 @@ const App = () => {
 		}
 	};
 
+	const deleteNumber = person => {
+		console.log('deleteNumber', person);
+		personService.deletePerson(person).then(response => {
+			// console.log('Deleted', response);
+			setPersons(persons.filter(p => p.id !== person.id));
+		});
+	};
+
 	const handleNameChange = event => {
 		setNewName(event.target.value);
 	};
@@ -70,7 +78,11 @@ const App = () => {
 				handleNumberChange={handleNumberChange}
 			/>
 
-			<PersonList search={search} persons={persons} />
+			<PersonList
+				search={search}
+				persons={persons}
+				deleteNumber={deleteNumber}
+			/>
 		</div>
 	);
 };
