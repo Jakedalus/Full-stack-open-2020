@@ -23,9 +23,31 @@ const App = () => {
 			if (
 				persons.map(person => person.name).includes(newName)
 			) {
-				window.alert(
-					`${newName} is already added to phonebook`
+				// window.alert(
+				// 	`${newName} is already added to phonebook`
+				// );
+				const userWantsToUpdateNumber = window.confirm(
+					`${newName} is already added to phonebook. Do you want to replace the old number with a new one?`
 				);
+
+				if (userWantsToUpdateNumber) {
+					const personToUpdate = persons.find(
+						p => p.name === newName
+					);
+					personService
+						.updatePerson({
+							...personToUpdate,
+							number : newNumber
+						})
+						.then(updatedPerson => {
+							console.log('updatedPerson', updatedPerson);
+							setPersons(
+								persons
+									.filter(p => p.name !== newName)
+									.concat(updatedPerson)
+							);
+						});
+				}
 			} else {
 				const newPerson = {
 					name   : newName,
