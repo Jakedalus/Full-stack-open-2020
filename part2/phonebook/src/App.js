@@ -23,6 +23,7 @@ const App = () => {
 		event.preventDefault();
 		if (newName !== '' && newNumber !== '') {
 			if (
+				// if person already exists, ask if user wants to Update
 				persons.map(person => person.name).includes(newName)
 			) {
 				// window.alert(
@@ -48,9 +49,20 @@ const App = () => {
 									.filter(p => p.name !== newName)
 									.concat(updatedPerson)
 							);
-							setMessage(
-								`${updatedPerson.name} was updated`
-							);
+							setMessage({
+								message : `${updatedPerson.name} was updated`,
+								type    : 'success'
+							});
+							setTimeout(() => {
+								setMessage(null);
+							}, 5000);
+						})
+						.catch(error => {
+							console.log('Error:', error);
+							setMessage({
+								message : `${newName} has already been removed from the server`,
+								type    : 'error'
+							});
 							setTimeout(() => {
 								setMessage(null);
 							}, 5000);
@@ -66,9 +78,10 @@ const App = () => {
 					.createPerson(newPerson)
 					.then(returnedPerson => {
 						setPersons(persons.concat(returnedPerson));
-						setMessage(
-							`${returnedPerson.name} was added to the phonebook`
-						);
+						setMessage({
+							message : `${returnedPerson.name} was added to the phonebook`,
+							type    : 'success'
+						});
 						setTimeout(() => {
 							setMessage(null);
 						}, 5000);
@@ -90,9 +103,10 @@ const App = () => {
 			personService.deletePerson(person).then(response => {
 				// console.log('Deleted', response);
 				setPersons(persons.filter(p => p.id !== person.id));
-				setMessage(
-					`${person.name} was deleted from the phonebook`
-				);
+				setMessage({
+					message : `${person.name} was deleted from the phonebook`,
+					type    : 'success'
+				});
 				setTimeout(() => {
 					setMessage(null);
 				}, 5000);
