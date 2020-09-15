@@ -1,11 +1,12 @@
 import axios from 'axios';
 // const baseUrl = 'http://localhost:3001/api/persons';
-const baseUrl =
-	'https://murmuring-hollows-93696.herokuapp.com/api/persons';
+// const baseUrl =
+// 	'https://murmuring-hollows-93696.herokuapp.com/api/persons';
+const baseUrl = '/api/persons';
 
 const getAll = () => {
 	return axios.get(baseUrl).then(response => {
-		console.log(response);
+		console.log('getAll:', response);
 		return response.data;
 	});
 };
