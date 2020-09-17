@@ -11,6 +11,13 @@ const getAll = () => {
 	});
 };
 
+const getOne = id => {
+	return axios.get(`${baseUrl}/${id}`).then(response => {
+		console.log('getOne:', response);
+		return response.data;
+	});
+};
+
 const createPerson = newPerson => {
 	return axios
 		.post(baseUrl, newPerson)
@@ -33,6 +40,7 @@ const updatePerson = person => {
 
 export default {
 	getAll,
+	getOne,
 	createPerson,
 	deletePerson,
 	updatePerson
