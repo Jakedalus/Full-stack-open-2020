@@ -10,7 +10,7 @@ const PersonList = ({ search, persons, deleteNumber }) => (
 			)
 			.map(person => (
 				<Person
-					key={person.name}
+					key={person.id}
 					person={person}
 					deleteNumber={deleteNumber}
 				/>
