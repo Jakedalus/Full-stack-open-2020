@@ -58,9 +58,13 @@ const App = () => {
 							}, 5000);
 						})
 						.catch(error => {
-							console.log('Error:', error);
+							console.log('Error:', error.response.data);
+							// setMessage({
+							// 	message : `${newName} has already been removed from the server`,
+							// 	type    : 'error'
+							// });
 							setMessage({
-								message : `${newName} has already been removed from the server`,
+								message : error.response.data.error,
 								type    : 'error'
 							});
 							setTimeout(() => {
