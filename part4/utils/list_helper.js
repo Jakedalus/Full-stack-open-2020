@@ -5,8 +5,21 @@ const totalLikes = list => {
 	return list.length === 0
 		? 0
 		: list.reduce((sum, blog) => {
-				sum + blog.likes;
+				return sum + blog.likes;
 			}, 0);
 };
 
-module.exports = { dummy, totalLikes };
+const favoriteBlog = blogs => {
+	let maxLikes = 0,
+		maxBlog = {};
+	const fav = blogs.filter(blog => {
+		if (blog.likes > maxLikes) {
+			maxLikes = blog.likes;
+			maxBlog = blog;
+		}
+	});
+
+	return maxBlog;
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog };

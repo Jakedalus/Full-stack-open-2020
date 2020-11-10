@@ -2,14 +2,7 @@ const listHelper = require('../utils/list_helper');
 
 console.log('...starting list_helper.test.js');
 
-test('dummy returns one (1)', () => {
-	const blogs = [];
-
-	const result = listHelper.dummy(blogs);
-	expect(result).toBe(1);
-});
-
-describe('total likes', () => {
+beforeEach(() => {
 	const blogs = [
 		{
 			_id    : '5a422a851b54a676234d17f7',
@@ -65,7 +58,16 @@ describe('total likes', () => {
 			__v    : 0
 		}
 	];
+});
 
+test('dummy returns one (1)', () => {
+	const blogs = [];
+
+	const result = listHelper.dummy(blogs);
+	expect(result).toBe(1);
+});
+
+describe('total likes', () => {
 	const listWithOneBlog = [
 		{
 			_id    : '5a422aa71b54a676234d17f8',
@@ -85,4 +87,28 @@ describe('total likes', () => {
 
 		expect(result).toBe(0);
 	});
+
+	test('when list has only one blog equals likes of that blog', () => {
+		const oneBlogList = [
+			{
+				_id    : '5a422bc61b54a676234d17fc',
+				title  : 'Type wars',
+				author : 'Robert C. Martin',
+				url    :
+					'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+				likes  : 2,
+				__v    : 0
+			}
+		];
+
+		const result = listHelper.totalLikes(oneBlogList);
+
+		// console.log(result, oneBlogList[0]);
+
+		expect(result).toBe(oneBlogList[0].likes);
+	});
+});
+
+describe('favorite blog', () => {
+	// test('');
 });
