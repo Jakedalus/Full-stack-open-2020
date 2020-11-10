@@ -114,5 +114,42 @@ describe('total likes', () => {
 });
 
 describe('favorite blog', () => {
-	// test('');
+	test('of empty list is {}', () => {
+		const emptyBlogList = [];
+
+		const result = listHelper.favoriteBlog(emptyBlogList);
+
+		expect(result).toEqual({});
+	});
+
+	test('when list has only one blog equals that blog as favorite', () => {
+		const oneBlogList = [
+			{
+				_id    : '5a422bc61b54a676234d17fc',
+				title  : 'Type wars',
+				author : 'Robert C. Martin',
+				url    :
+					'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+				likes  : 2,
+				__v    : 0
+			}
+		];
+		const result = listHelper.favoriteBlog(oneBlogList);
+
+		// console.log(result);
+
+		const { title, author, likes } = oneBlogList[0];
+
+		expect(result).toEqual({ title, author, likes });
+	});
+
+	test('returns blog with most likes of a bigger list', () => {
+		const result = listHelper.favoriteBlog(blogs);
+
+		expect(result).toEqual({
+			title  : 'Canonical string reduction',
+			author : 'Edsger W. Dijkstra',
+			likes  : 12
+		});
+	});
 });
