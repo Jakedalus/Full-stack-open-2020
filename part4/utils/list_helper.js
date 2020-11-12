@@ -32,4 +32,28 @@ const favoriteBlog = blogs => {
 	return { author, title, likes };
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+const mostBlogs = blogs => {
+	const counts = {};
+	let maxAuthor = null,
+		maxBlogs = 0;
+	for (let blog of blogs) {
+		// console.log(blog, counts);
+		const { author } = blog;
+		counts[author] = counts[author]
+			? counts[author] + 1
+			: 1;
+		if (counts[author] > maxBlogs) {
+			maxBlogs = counts[author];
+			maxAuthor = author;
+		}
+	}
+
+	return { author: maxAuthor, blogs: maxBlogs };
+};
+
+module.exports = {
+	dummy,
+	totalLikes,
+	favoriteBlog,
+	mostBlogs
+};

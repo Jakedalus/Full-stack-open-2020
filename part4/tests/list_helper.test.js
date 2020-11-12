@@ -153,3 +153,16 @@ describe('favorite blog', () => {
 		});
 	});
 });
+
+describe('most blogs', () => {
+	test('return author with most blogs written', () => {
+		const result = listHelper.mostBlogs(blogs);
+
+		// console.log(result);
+
+		expect(result).toEqual({
+			author : 'Robert C. Martin',
+			blogs  : 3
+		});
+	});
+});
