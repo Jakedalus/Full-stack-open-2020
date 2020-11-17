@@ -70,27 +70,55 @@ beforeEach(async () => {
 	}
 });
 
-test('blogs are returned as json', async () => {
-	await api
-		.get('/api/blogs')
-		.expect(200)
-		.expect('Content-Type', /application\/json/);
-});
+describe('blog api tests', () => {
+	test('blogs are returned as json', async () => {
+		const response = await api
+			.get('/api/blogs')
+			.expect(200)
+			.expect('Content-Type', /application\/json/);
 
-test('there are six blogs', async () => {
-	const response = await api.get('/api/blogs');
+		console.log(response.body);
+	});
 
-	console.log(response.body);
+	test('there are six blogs', async () => {
+		const response = await api.get('/api/blogs');
 
-	expect(response.body).toHaveLength(6);
-});
+		console.log(response.body);
 
-test('blogs should have an "id" property', async () => {
-	const response = await api.get('/api/blogs');
+		expect(response.body).toHaveLength(6);
+	});
 
-	console.log(response.body);
+	test('blogs should have an "id" property', async () => {
+		const response = await api.get('/api/blogs');
 
-	expect(response.body[0].id).toBeDefined();
+		console.log(response.body);
+
+		expect(response.body[0].id).toBeDefined();
+	});
+
+	test('new blog should be added to the database', async () => {
+		const newBlog = {
+			title  : 'TEST TITLE',
+			author : 'TEST AUTHOR',
+			url    : 'http://www.test.com',
+			likes  : 20
+		};
+
+		await api
+			.post('/api/blogs')
+			.send(newBlog)
+			.expect(201)
+			.expect('Content-Type', /application\/json/);
+
+		const response = await api.get('/api/blogs');
+
+		console.log(response.body);
+
+		const contents = response.body.map(r => r.author);
+
+		expect(response.body).toHaveLength(7);
+		expect(contents).toContain('TEST AUTHOR');
+	});
 });
 
 afterAll(() => mongoose.connection.close());
