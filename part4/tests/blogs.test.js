@@ -80,7 +80,17 @@ test('blogs are returned as json', async () => {
 test('there are six blogs', async () => {
 	const response = await api.get('/api/blogs');
 
+	console.log(response.body);
+
 	expect(response.body).toHaveLength(6);
+});
+
+test('blogs should have an "id" property', async () => {
+	const response = await api.get('/api/blogs');
+
+	console.log(response.body);
+
+	expect(response.body[0].id).toBeDefined();
 });
 
 afterAll(() => mongoose.connection.close());
