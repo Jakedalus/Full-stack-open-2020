@@ -17,9 +17,15 @@ blogsRouter.post('/', (request, response) => {
 
 	if (!blog.likes) blog.likes = 0;
 
-	// async version ------
-	const newBlog = blog.save();
-	response.status(201).json(newBlog);
+	console.log('blog', blog);
+
+	if (!blog.title && !blog.url) {
+		console.log('no title or url!');
+		response.status(400).end();
+	} else {
+		const newBlog = blog.save();
+		response.status(201).json(newBlog);
+	}
 
 	// blog.save().then(result => {
 	// 	response.status(201).json(result);

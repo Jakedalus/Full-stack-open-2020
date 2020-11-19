@@ -149,6 +149,14 @@ describe('blog api tests', () => {
 
 		expect(newBlogFromDb.likes).toBe(0);
 	});
+
+	test('new blog without title and url causes 400 Bad Request', async () => {
+		const newBlog = {
+			author : 'TEST AUTHOR'
+		};
+
+		await api.post('/api/blogs').send(newBlog).expect(400);
+	});
 });
 
 afterAll(() => mongoose.connection.close());
