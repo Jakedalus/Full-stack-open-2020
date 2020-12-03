@@ -161,29 +161,77 @@ describe('blog api tests', () => {
 });
 
 describe('deletion of a blog', () => {
+	test('succeeds with status code 204 if id is valid', async () => {
+		const notesAtStart = await api.get('/api/blogs');
+		const blogToDelete = notesAtStart.body[0].id;
+
+		console.log('blogToDelete', blogToDelete);
+
+		await api
+			.delete(`/api/blogs/${blogToDelete}`)
+			.expect(204);
+
+		const notesAtEnd = await api.get('/api/blogs');
+
+		console.log('notesAtEnd.body', notesAtEnd.body);
+
+		expect(notesAtEnd.body).toHaveLength(
+			notesAtStart.body.length - 1
+		);
+
+		const titles = notesAtEnd.body.map(r => r.title);
+
+		expect(titles).not.toContain(blogToDelete.title);
+	});
+});
+
+describe('update a blog', () => {
+	test('succeeds with status code 204 and updated blog if id is valid', async () => {
+		const blogsAtStart = await api.get('/api/blogs');
+
+		const blogToUpdate = blogsAtStart.body[0];
+
+		const newBlog = {
+			...blogToUpdate,
+			likes : 17
+		};
+
+		console.log('newBlog', newBlog);
+
+		const updatedBlog = await api
+			.put(`/api/blogs/${blogToUpdate.id}`)
+			.send(newBlog)
+			.expect(200);
+
+		console.log('updatedBlog.body', updatedBlog.body);
+
+		expect(updatedBlog.body).toEqual(newBlog);
+	});
+
 	test.only(
-		'succeeds with status code 204 if id is valid',
+		'fails with status code 400 because of invalid id',
 		async () => {
-			const notesAtStart = await api.get('/api/blogs');
-			const blogToDelete = notesAtStart.body[0].id;
+			const blogsAtStart = await api.get('/api/blogs');
 
-			console.log('blogToDelete', blogToDelete);
+			const blogToUpdate = blogsAtStart.body[0];
 
-			await api
-				.delete(`/api/blogs/${blogToDelete}`)
-				.expect(204);
+			const newBlog = {
+				...blogToUpdate,
+				likes : 17
+			};
 
-			const notesAtEnd = await api.get('/api/blogs');
+			const id = mongoose.Types.ObjectId();
 
-			console.log('notesAtEnd.body', notesAtEnd.body);
+			console.log('newBlog', newBlog);
 
-			expect(notesAtEnd.body).toHaveLength(
-				notesAtStart.body.length - 1
-			);
+			const updatedBlog = await api
+				.put(`/api/blogs/${id}`)
+				.send(newBlog)
+				.expect(400);
 
-			const titles = notesAtEnd.body.map(r => r.title);
+			console.log('updatedBlog.body', updatedBlog.body);
 
-			expect(titles).not.toContain(blogToDelete.title);
+			expect(updatedBlog.body).toEqual({});
 		}
 	);
 });
