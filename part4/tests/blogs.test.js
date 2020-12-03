@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
 const blogsRouter = require('../controllers/blogs');
+const blog = require('../models/blog');
 const api = supertest(app);
 const Blog = require('../models/blog');
 
@@ -157,6 +158,34 @@ describe('blog api tests', () => {
 
 		await api.post('/api/blogs').send(newBlog).expect(400);
 	});
+});
+
+describe('deletion of a blog', () => {
+	test.only(
+		'succeeds with status code 204 if id is valid',
+		async () => {
+			const notesAtStart = await api.get('/api/blogs');
+			const blogToDelete = notesAtStart.body[0].id;
+
+			console.log('blogToDelete', blogToDelete);
+
+			await api
+				.delete(`/api/blogs/${blogToDelete}`)
+				.expect(204);
+
+			const notesAtEnd = await api.get('/api/blogs');
+
+			console.log('notesAtEnd.body', notesAtEnd.body);
+
+			expect(notesAtEnd.body).toHaveLength(
+				notesAtStart.body.length - 1
+			);
+
+			const titles = notesAtEnd.body.map(r => r.title);
+
+			expect(titles).not.toContain(blogToDelete.title);
+		}
+	);
 });
 
 afterAll(() => mongoose.connection.close());
