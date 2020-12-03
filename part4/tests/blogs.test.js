@@ -163,12 +163,12 @@ describe('blog api tests', () => {
 describe('deletion of a blog', () => {
 	test('succeeds with status code 204 if id is valid', async () => {
 		const notesAtStart = await api.get('/api/blogs');
-		const blogToDelete = notesAtStart.body[0].id;
+		const blogToDelete = notesAtStart.body[0];
 
 		console.log('blogToDelete', blogToDelete);
 
 		await api
-			.delete(`/api/blogs/${blogToDelete}`)
+			.delete(`/api/blogs/${blogToDelete.id}`)
 			.expect(204);
 
 		const notesAtEnd = await api.get('/api/blogs');
@@ -182,6 +182,29 @@ describe('deletion of a blog', () => {
 		const titles = notesAtEnd.body.map(r => r.title);
 
 		expect(titles).not.toContain(blogToDelete.title);
+	});
+
+	test('fails with status code 400 if id is invalid', async () => {
+		const notesAtStart = await api.get('/api/blogs');
+		const blogToDelete = notesAtStart.body[0];
+
+		console.log('blogToDelete', blogToDelete);
+
+		const id = mongoose.Types.ObjectId();
+
+		await api.delete(`/api/blogs/${id}`).expect(400);
+
+		const notesAtEnd = await api.get('/api/blogs');
+
+		console.log('notesAtEnd.body', notesAtEnd.body);
+
+		expect(notesAtEnd.body).toHaveLength(
+			notesAtStart.body.length
+		);
+
+		const titles = notesAtEnd.body.map(r => r.title);
+
+		expect(titles).toContain(blogToDelete.title);
 	});
 });
 
@@ -208,32 +231,29 @@ describe('update a blog', () => {
 		expect(updatedBlog.body).toEqual(newBlog);
 	});
 
-	test.only(
-		'fails with status code 400 because of invalid id',
-		async () => {
-			const blogsAtStart = await api.get('/api/blogs');
+	test('fails with status code 400 because of invalid id', async () => {
+		const blogsAtStart = await api.get('/api/blogs');
 
-			const blogToUpdate = blogsAtStart.body[0];
+		const blogToUpdate = blogsAtStart.body[0];
 
-			const newBlog = {
-				...blogToUpdate,
-				likes : 17
-			};
+		const newBlog = {
+			...blogToUpdate,
+			likes : 17
+		};
 
-			const id = mongoose.Types.ObjectId();
+		const id = mongoose.Types.ObjectId();
 
-			console.log('newBlog', newBlog);
+		console.log('newBlog', newBlog);
 
-			const updatedBlog = await api
-				.put(`/api/blogs/${id}`)
-				.send(newBlog)
-				.expect(400);
+		const updatedBlog = await api
+			.put(`/api/blogs/${id}`)
+			.send(newBlog)
+			.expect(400);
 
-			console.log('updatedBlog.body', updatedBlog.body);
+		console.log('updatedBlog.body', updatedBlog.body);
 
-			expect(updatedBlog.body).toEqual({});
-		}
-	);
+		expect(updatedBlog.body).toEqual({});
+	});
 });
 
 afterAll(() => mongoose.connection.close());
