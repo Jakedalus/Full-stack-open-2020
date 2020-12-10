@@ -41,8 +41,8 @@ describe('when there is initially one user in db', () => {
 			usersAtStart.length + 1
 		);
 
-		const username = usersAtEnd.map(u => u.username);
-		expect(username).toContain(newUser.username);
+		const usernames = usersAtEnd.map(u => u.username);
+		expect(usernames).toContain(newUser.username);
 	});
 
 	test('attempt to create user with non-unique username fails', async () => {
@@ -82,8 +82,8 @@ describe('when there is initially one user in db', () => {
 		const usersAtEnd = await helper.usersInDb();
 		expect(usersAtEnd).toHaveLength(usersAtStart.length);
 
-		const username = usersAtEnd.map(u => u.username);
-		expect(username).not.toContain(newUser.username);
+		const usernames = usersAtEnd.map(u => u.username);
+		expect(usernames).not.toContain(newUser.username);
 	});
 
 	test('attempt to create user with password less than 3 characters fails', async () => {
@@ -109,12 +109,14 @@ describe('when there is initially one user in db', () => {
 		console.log('what 2');
 
 		const usersAtEnd = await helper.usersInDb();
+		console.log('what 3');
 		expect(usersAtEnd).toHaveLength(usersAtStart.length);
 
-		console.log('what 3');
+		console.log('what 4');
 
-		const username = usersAtEnd.map(u => u.username);
-		expect(username).not.toContain(newUser.username);
+		const usernames = usersAtEnd.map(u => u.username);
+		console.log('usernames', usernames);
+		expect(usernames).not.toContain(newUser.username);
 	});
 });
 
