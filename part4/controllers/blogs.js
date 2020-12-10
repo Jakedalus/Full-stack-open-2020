@@ -1,9 +1,14 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const helper = require('../utils/test_helper');
 
 blogsRouter.get('/', async (request, response) => {
 	// async version ------
-	const blogs = await Blog.find({});
+	const blogs = await Blog.find({}).populate('user', {
+		username : 1,
+		name     : 1,
+		_id      : 1
+	});
 
 	response.json(blogs);
 
@@ -12,8 +17,14 @@ blogsRouter.get('/', async (request, response) => {
 	// });
 });
 
-blogsRouter.post('/', (request, response) => {
-	const blog = new Blog(request.body);
+blogsRouter.post('/', async (request, response) => {
+	const users = await helper.usersInDb();
+
+	const user = users[0].id;
+
+	console.log('user', user);
+
+	const blog = new Blog({ ...request.body, user });
 
 	if (!blog.likes) blog.likes = 0;
 
@@ -23,7 +34,7 @@ blogsRouter.post('/', (request, response) => {
 		console.log('no title or url!');
 		response.status(400).end();
 	} else {
-		const newBlog = blog.save();
+		const newBlog = await blog.save();
 		response.status(201).json(newBlog);
 	}
 
