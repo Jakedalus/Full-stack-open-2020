@@ -9,12 +9,12 @@ const requestLogger = (req, res, next) => {
 };
 
 const errorHandler = (error, req, res, next) => {
-	console.log('errorHandler, error:', error);
-	console.log(
-		'errorHandler, error.message:',
-		error.message
-	);
-	console.log('errorHandler, error.name:', error.name);
+	// console.log('errorHandler, error:', error);
+	// console.log(
+	// 	'errorHandler, error.message:',
+	// 	error.message
+	// );
+	// console.log('errorHandler, error.name:', error.name);
 
 	if (error.name === 'CastError') {
 		return res.status(400).send({ error: 'malformed id' });
