@@ -8,6 +8,21 @@ const requestLogger = (req, res, next) => {
 	next();
 };
 
+const tokenExtractor = (request, response, next) => {
+	const authorization = request.get('authorization');
+	// console.log('authorization', authorization);
+	if (
+		authorization &&
+		authorization.toLowerCase().startsWith('bearer')
+	) {
+		request.token = authorization.substring(7);
+	} else {
+		request.token = null;
+	}
+
+	next();
+};
+
 const errorHandler = (error, req, res, next) => {
 	// console.log('errorHandler, error:', error);
 	// console.log(
@@ -32,6 +47,7 @@ const unknownEndpoint = (req, res) => {
 
 module.exports = {
 	requestLogger,
+	tokenExtractor,
 	unknownEndpoint,
 	errorHandler
 };

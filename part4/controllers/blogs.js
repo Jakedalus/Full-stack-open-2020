@@ -4,17 +4,17 @@ const helper = require('../utils/test_helper');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const getTokenFrom = request => {
-	const authorization = request.get('authorization');
-	if (
-		authorization &&
-		authorization.toLowerCase().startsWith('bearer')
-	) {
-		return authorization.substring(7);
-	}
+// const getTokenFrom = request => {
+// 	const authorization = request.get('authorization');
+// 	if (
+// 		authorization &&
+// 		authorization.toLowerCase().startsWith('bearer')
+// 	) {
+// 		return authorization.substring(7);
+// 	}
 
-	return null;
-};
+// 	return null;
+// };
 
 blogsRouter.get('/', async (request, response) => {
 	// async version ------
@@ -36,12 +36,15 @@ blogsRouter.post('/', async (request, response) => {
 	// const users = await helper.usersInDb();
 	// const user = users[0].id;
 
-	const token = getTokenFrom(request);
+	// // console.log('request.token', request.token);
+
+	// const token = getTokenFrom(request);
+
 	const decodedToken = jwt.verify(
-		token,
+		request.token,
 		process.env.SECRET
 	);
-	if (!token || !decodedToken) {
+	if (!request.token || !decodedToken) {
 		return response
 			.status(401)
 			.json({ error: 'token missing or invalid' });
