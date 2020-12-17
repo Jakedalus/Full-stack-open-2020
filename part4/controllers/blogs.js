@@ -117,6 +117,8 @@ blogsRouter.delete('/:id', async (request, response) => {
 			} else {
 				response.status(400).end();
 			}
+		} else {
+			response.status(400).end();
 		}
 	} else {
 		response.status(400).end();
@@ -133,16 +135,53 @@ blogsRouter.put('/:id', async (request, response) => {
 	};
 	console.log('body', body);
 	console.log('newBlog', newBlog);
-	const updatedBlog = await Blog.findByIdAndUpdate(
-		request.params.id,
-		newBlog,
-		{
-			new : true
-		}
+
+	const decodedToken = jwt.verify(
+		request.token,
+		process.env.SECRET
+	);
+	if (!request.token || !decodedToken) {
+		return response
+			.status(401)
+			.json({ error: 'token missing or invalid' });
+	}
+	const user = await User.findById(decodedToken.id);
+
+	console.log('user', user);
+
+	const blogToUpdate = await Blog.findById(
+		request.params.id
 	);
 
-	if (updatedBlog) {
-		response.status(200).json(updatedBlog);
+	console.log('blogToUpdate', blogToUpdate);
+
+	if (blogToUpdate) {
+		console.log(
+			'user._id.toString() === blogToUpdate.user.toString()',
+			user._id.toString() === blogToUpdate.user.toString()
+		);
+
+		if (
+			user._id.toString() === blogToUpdate.user.toString()
+		) {
+			const updatedBlog = await Blog.findByIdAndUpdate(
+				request.params.id,
+				newBlog,
+				{
+					new : true
+				}
+			);
+
+			console.log('updatedBlog', updatedBlog);
+
+			if (updatedBlog) {
+				response.status(200).json(updatedBlog);
+			} else {
+				response.status(400).end();
+			}
+		} else {
+			response.status(400).end();
+		}
 	} else {
 		response.status(400).end();
 	}
