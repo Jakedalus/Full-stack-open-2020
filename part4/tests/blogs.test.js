@@ -49,6 +49,16 @@ const initialUsers = [
 
 const initialBlogs = [
 	{
+		_id    : '5ff8e97be70f49b594daa4a6',
+		// _id    : mongoose.Types.ObjectId(),
+		title  : 'TEST BLOG',
+		author : 'TEST USER',
+		url    : 'https://testing.com/',
+		likes  : 77,
+		user   : initialUsers[3]._id,
+		__v    : 0
+	},
+	{
 		_id    : '5a422a851b54a676234d17f7',
 		// _id    : mongoose.Types.ObjectId(),
 		title  : 'React patterns',
@@ -172,7 +182,7 @@ describe('blog api tests', () => {
 
 		console.log(response.body);
 
-		expect(response.body).toHaveLength(6);
+		expect(response.body).toHaveLength(7);
 	});
 
 	test('blogs should have an "id" property', async () => {
@@ -204,7 +214,7 @@ describe('blog api tests', () => {
 
 		const contents = response.body.map(r => r.author);
 
-		expect(response.body).toHaveLength(7);
+		expect(response.body).toHaveLength(8);
 		expect(contents).toContain('TEST AUTHOR');
 	});
 
@@ -217,6 +227,7 @@ describe('blog api tests', () => {
 
 		await api
 			.post('/api/blogs')
+			.set('Authorization', 'Bearer ' + token)
 			.send(newBlog)
 			.expect(201)
 			.expect('Content-Type', /application\/json/);
@@ -243,7 +254,11 @@ describe('blog api tests', () => {
 			author : 'TEST AUTHOR'
 		};
 
-		await api.post('/api/blogs').send(newBlog).expect(400);
+		await api
+			.post('/api/blogs')
+			.set('Authorization', 'Bearer ' + token)
+			.send(newBlog)
+			.expect(400);
 	});
 });
 
@@ -256,6 +271,7 @@ describe('deletion of a blog', () => {
 
 		await api
 			.delete(`/api/blogs/${blogToDelete.id}`)
+			.set('Authorization', 'Bearer ' + token)
 			.expect(204);
 
 		const notesAtEnd = await api.get('/api/blogs');
@@ -279,7 +295,10 @@ describe('deletion of a blog', () => {
 
 		const id = mongoose.Types.ObjectId();
 
-		await api.delete(`/api/blogs/${id}`).expect(400);
+		await api
+			.delete(`/api/blogs/${id}`)
+			.set('Authorization', 'Bearer ' + token)
+			.expect(400);
 
 		const notesAtEnd = await api.get('/api/blogs');
 
@@ -301,21 +320,30 @@ describe('update a blog', () => {
 
 		const blogToUpdate = blogsAtStart.body[0];
 
+		console.log('blogToUpdate', blogToUpdate);
+
 		const newBlog = {
 			...blogToUpdate,
+			user  : initialUsers[3]._id, // expects populated user field unless this is included
 			likes : 17
 		};
 
+		const testBlog = { ...newBlog };
+
 		console.log('newBlog', newBlog);
+		console.log('testBlog', testBlog);
 
 		const updatedBlog = await api
 			.put(`/api/blogs/${blogToUpdate.id}`)
+			.set('Authorization', 'Bearer ' + token)
 			.send(newBlog)
 			.expect(200);
 
 		console.log('updatedBlog.body', updatedBlog.body);
+		console.log('newBlog after call', newBlog);
+		console.log('testBlog after call', testBlog);
 
-		expect(updatedBlog.body).toEqual(newBlog);
+		expect(updatedBlog.body).toEqual(testBlog);
 	});
 
 	test('fails with status code 400 because of invalid id', async () => {
@@ -325,6 +353,7 @@ describe('update a blog', () => {
 
 		const newBlog = {
 			...blogToUpdate,
+			user  : initialUsers[3]._id,
 			likes : 17
 		};
 
@@ -334,6 +363,7 @@ describe('update a blog', () => {
 
 		const updatedBlog = await api
 			.put(`/api/blogs/${id}`)
+			.set('Authorization', 'Bearer ' + token)
 			.send(newBlog)
 			.expect(400);
 
