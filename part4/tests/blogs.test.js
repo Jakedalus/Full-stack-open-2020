@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const app = require('../app');
 const blogsRouter = require('../controllers/blogs');
 const blog = require('../models/blog');
@@ -11,12 +13,14 @@ const initialUsers = [
 	{
 		username : 'michael_chan',
 		name     : 'Michael Chan',
+		password : '123abc',
 		_id      : '5ff8dec1833e8a63f03a41b1',
 		blogs    : [ '5a422a851b54a676234d17f7' ]
 	},
 	{
 		username : 'the_dijk',
 		name     : 'Edsger W. Dijkstra',
+		password : '123abc',
 		_id      : '5ff8deca6974bc3a42aef6eb',
 		blogs    : [
 			'5a422aa71b54a676234d17f8',
@@ -26,12 +30,20 @@ const initialUsers = [
 	{
 		username : 'robby',
 		author   : 'Robert C. Martin',
+		password : '123abc',
 		_id      : '5ff8ded00f03d739405d7c8e',
 		blogs    : [
 			'5a422b891b54a676234d17fa',
 			'5a422ba71b54a676234d17fb',
 			'5a422bc61b54a676234d17fc'
 		]
+	},
+	{
+		username : 'test_user',
+		name     : 'TEST USER',
+		password : '123abc',
+		_id      : '5ff8e657b49df86e470cebae',
+		blogs    : []
 	}
 ];
 
@@ -103,12 +115,22 @@ const initialBlogs = [
 	}
 ];
 
+let token;
+
 beforeEach(async () => {
 	// Create initial users in db
 	await User.deleteMany({});
 
 	for (let user of initialUsers) {
-		let userObject = new User(user);
+		const saltRounds = 10;
+		const passwordHash = await bcrypt.hash(
+			user.password,
+			saltRounds
+		);
+		let userObject = new User({
+			...user,
+			password : passwordHash
+		});
 		await userObject.save();
 	}
 
@@ -119,6 +141,20 @@ beforeEach(async () => {
 		let blogObject = new Blog(blog);
 		await blogObject.save();
 	}
+
+	// Login test_user and get token
+	const user = await User.findOne({
+		username : 'test_user'
+	});
+
+	const userForToken = {
+		username : user.username,
+		id       : user._id
+	};
+
+	token = jwt.sign(userForToken, process.env.SECRET);
+
+	console.log('token', token);
 });
 
 describe('blog api tests', () => {
@@ -157,6 +193,7 @@ describe('blog api tests', () => {
 
 		await api
 			.post('/api/blogs')
+			.set('Authorization', 'Bearer ' + token)
 			.send(newBlog)
 			.expect(201)
 			.expect('Content-Type', /application\/json/);
