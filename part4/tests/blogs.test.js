@@ -5,64 +5,114 @@ const blogsRouter = require('../controllers/blogs');
 const blog = require('../models/blog');
 const api = supertest(app);
 const Blog = require('../models/blog');
+const User = require('../models/user');
+
+const initialUsers = [
+	{
+		username : 'michael_chan',
+		name     : 'Michael Chan',
+		_id      : '5ff8dec1833e8a63f03a41b1',
+		blogs    : [ '5a422a851b54a676234d17f7' ]
+	},
+	{
+		username : 'the_dijk',
+		name     : 'Edsger W. Dijkstra',
+		_id      : '5ff8deca6974bc3a42aef6eb',
+		blogs    : [
+			'5a422aa71b54a676234d17f8',
+			'5a422b3a1b54a676234d17f9'
+		]
+	},
+	{
+		username : 'robby',
+		author   : 'Robert C. Martin',
+		_id      : '5ff8ded00f03d739405d7c8e',
+		blogs    : [
+			'5a422b891b54a676234d17fa',
+			'5a422ba71b54a676234d17fb',
+			'5a422bc61b54a676234d17fc'
+		]
+	}
+];
 
 const initialBlogs = [
 	{
 		_id    : '5a422a851b54a676234d17f7',
+		// _id    : mongoose.Types.ObjectId(),
 		title  : 'React patterns',
 		author : 'Michael Chan',
 		url    : 'https://reactpatterns.com/',
 		likes  : 7,
+		user   : initialUsers[0]._id,
 		__v    : 0
 	},
 	{
 		_id    : '5a422aa71b54a676234d17f8',
+		// _id    : mongoose.Types.ObjectId(),
 		title  : 'Go To Statement Considered Harmful',
 		author : 'Edsger W. Dijkstra',
 		url    :
 			'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
 		likes  : 5,
+		user   : initialUsers[1]._id,
 		__v    : 0
 	},
 	{
 		_id    : '5a422b3a1b54a676234d17f9',
+		// _id    : mongoose.Types.ObjectId(),
 		title  : 'Canonical string reduction',
 		author : 'Edsger W. Dijkstra',
 		url    :
 			'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
 		likes  : 12,
+		user   : initialUsers[1]._id,
 		__v    : 0
 	},
 	{
 		_id    : '5a422b891b54a676234d17fa',
+		// _id    : mongoose.Types.ObjectId(),
 		title  : 'First class tests',
 		author : 'Robert C. Martin',
 		url    :
 			'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
 		likes  : 10,
+		user   : initialUsers[2]._id,
 		__v    : 0
 	},
 	{
 		_id    : '5a422ba71b54a676234d17fb',
+		// _id    : mongoose.Types.ObjectId(),
 		title  : 'TDD harms architecture',
 		author : 'Robert C. Martin',
 		url    :
 			'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
 		likes  : 0,
+		user   : initialUsers[2]._id,
 		__v    : 0
 	},
 	{
 		_id    : '5a422bc61b54a676234d17fc',
+		// _id    : mongoose.Types.ObjectId(),
 		title  : 'Type wars',
 		author : 'Robert C. Martin',
 		url    :
 			'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
 		likes  : 2,
+		user   : initialUsers[2]._id,
 		__v    : 0
 	}
 ];
 
 beforeEach(async () => {
+	// Create initial users in db
+	await User.deleteMany({});
+
+	for (let user of initialUsers) {
+		let userObject = new User(user);
+		await userObject.save();
+	}
+
+	// Create initial blogs in db
 	await Blog.deleteMany({});
 
 	for (let blog of initialBlogs) {
