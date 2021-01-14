@@ -7,6 +7,7 @@ const LoginForm = ({
 	handleLogin
 }) => (
 	<form onSubmit={handleLogin}>
+		<h2>Login to Application</h2>
 		<input
 			type='text'
 			placeholder='username'
