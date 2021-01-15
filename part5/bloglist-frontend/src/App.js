@@ -5,6 +5,7 @@ import React, {
 } from 'react';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
+import NewBlogForm from './components/NewBlogForm';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -17,6 +18,9 @@ const App = () => {
 	const [ username, setUsername ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ user, setUser ] = useState(null);
+	const [ title, setTitle ] = useState('');
+	const [ author, setAuthor ] = useState('');
+	const [ url, setUrl ] = useState('');
 
 	useEffect(() => {
 		blogService.getAll().then(blogs => setBlogs(blogs));
@@ -32,6 +36,24 @@ const App = () => {
 			// handleLogin.setToken(user.token);
 		}
 	}, []);
+
+	const handleCreateBlog = async e => {
+		e.preventDefault();
+		console.log('title, author, url:', title, author, url);
+		console.log(
+			'{ headers: { Authorization: `bearer ${user.token}` } }',
+			{ headers: { Authorization: `bearer ${user.token}` } }
+		);
+		const newBlog = await blogService.createNew(
+			{ title, author, url },
+			{ headers: { Authorization: `bearer ${user.token}` } }
+		);
+
+		setBlogs([ ...blogs, newBlog ]);
+		setTitle('');
+		setAuthor('');
+		setUrl('');
+	};
 
 	const handleLogin = async e => {
 		e.preventDefault();
@@ -85,6 +107,15 @@ const App = () => {
 						{user.name} is logged in
 						<button onClick={handleLogout}>logout</button>
 					</h2>
+					<NewBlogForm
+						title={title}
+						setTitle={setTitle}
+						author={author}
+						setAuthor={setAuthor}
+						url={url}
+						setUrl={setUrl}
+						handleCreateBlog={handleCreateBlog}
+					/>
 					{blogs.map(blog => (
 						<Blog key={blog.id} blog={blog} />
 					))}
