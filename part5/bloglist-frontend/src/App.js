@@ -6,15 +6,17 @@ import React, {
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
+import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import './App.css';
 
 // "username": "sample_username99",
 // "password": "samplesample"
 
 const App = () => {
 	const [ blogs, setBlogs ] = useState([]);
-	const [ errorMessage, setErrorMessage ] = useState(null);
+	const [ notification, setNotification ] = useState(null);
 	const [ username, setUsername ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ user, setUser ] = useState(null);
@@ -37,6 +39,16 @@ const App = () => {
 		}
 	}, []);
 
+	const displayNotification = ({ message, type }) => {
+		setNotification({
+			message,
+			type
+		});
+		setTimeout(() => {
+			setNotification(null);
+		}, 5000);
+	};
+
 	const handleCreateBlog = async e => {
 		e.preventDefault();
 		console.log('title, author, url:', title, author, url);
@@ -53,6 +65,11 @@ const App = () => {
 		setTitle('');
 		setAuthor('');
 		setUrl('');
+
+		displayNotification({
+			message : `a new blog ${newBlog.title} by ${newBlog.author} was created`,
+			type    : 'success'
+		});
 	};
 
 	const handleLogin = async e => {
@@ -76,10 +93,10 @@ const App = () => {
 			console.log('user', user);
 		} catch (exception) {
 			console.log('exception', exception);
-			setErrorMessage('Wrong credentials');
-			setTimeout(() => {
-				setErrorMessage(null);
-			}, 5000);
+			displayNotification({
+				message : 'Wrong credentials',
+				type    : 'error'
+			});
 		}
 	};
 
@@ -91,8 +108,9 @@ const App = () => {
 	return (
 		<div>
 			<h1>Blogs</h1>
-			{/* <Notification message={errorMessage} /> */}
-			<div>{errorMessage}</div>
+			{notification && (
+				<Notification notification={notification} />
+			)}
 			{user === null ? (
 				<LoginForm
 					username={username}
