@@ -23,6 +23,10 @@ const App = () => {
 	const [ title, setTitle ] = useState('');
 	const [ author, setAuthor ] = useState('');
 	const [ url, setUrl ] = useState('');
+	const [
+		createBlogFormVisible,
+		setCreateBlogFormVisible
+	] = useState(false);
 
 	useEffect(() => {
 		blogService.getAll().then(blogs => setBlogs(blogs));
@@ -125,15 +129,27 @@ const App = () => {
 						{user.name} is logged in
 						<button onClick={handleLogout}>logout</button>
 					</h2>
-					<NewBlogForm
-						title={title}
-						setTitle={setTitle}
-						author={author}
-						setAuthor={setAuthor}
-						url={url}
-						setUrl={setUrl}
-						handleCreateBlog={handleCreateBlog}
-					/>
+					{createBlogFormVisible && (
+						<NewBlogForm
+							title={title}
+							setTitle={setTitle}
+							author={author}
+							setAuthor={setAuthor}
+							url={url}
+							setUrl={setUrl}
+							handleCreateBlog={handleCreateBlog}
+							setCreateBlogFormVisible={
+								setCreateBlogFormVisible
+							}
+						/>
+					)}
+					{!createBlogFormVisible && (
+						<button
+							onClick={() => setCreateBlogFormVisible(true)}
+						>
+							new note
+						</button>
+					)}
 					{blogs.map(blog => (
 						<Blog key={blog.id} blog={blog} />
 					))}

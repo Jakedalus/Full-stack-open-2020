@@ -8,10 +8,14 @@ const NewBlogForm = ({
 	setAuthor,
 	url,
 	setUrl,
-	handleCreateBlog
+	handleCreateBlog,
+	setCreateBlogFormVisible
 }) => {
 	return (
-		<form onSubmit={handleCreateBlog}>
+		<form
+			className='new-blog-form'
+			onSubmit={handleCreateBlog}
+		>
 			<input
 				type='text'
 				placeholder='title'
@@ -33,7 +37,13 @@ const NewBlogForm = ({
 				name='URL'
 				onChange={({ target }) => setUrl(target.value)}
 			/>
-			<button>create</button>
+			<button type='submit'>create</button>
+			<button
+				type='button'
+				onClick={() => setCreateBlogFormVisible(false)}
+			>
+				cancel
+			</button>
 		</form>
 	);
 };

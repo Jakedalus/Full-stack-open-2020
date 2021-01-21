@@ -14,3 +14,13 @@
 	color: green;
 	border: 4px solid green;
 }
+
+.new-blog-form {
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+}
+
+.new-blog-form button {
+	width: 80px;
+}
