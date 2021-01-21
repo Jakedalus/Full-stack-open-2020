@@ -29,4 +29,18 @@ const createNew = async (blog, config) => {
 	return response.data;
 };
 
-export default { getAll, createNew };
+const updateBlog = async (id, updates, config) => {
+	console.log('updateBlog', id, updates, config);
+
+	const response = await axios.put(
+		`${baseUrl}/${id}`,
+		updates,
+		config
+	);
+
+	console.log('updateBlog, response', response);
+
+	return response.data;
+};
+
+export default { getAll, createNew, updateBlog };

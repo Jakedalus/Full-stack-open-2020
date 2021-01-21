@@ -72,6 +72,47 @@ const App = () => {
 		});
 	};
 
+	const editBlog = async (id, blogObject) => {
+		try {
+			const updatedBlog = await blogService.updateBlog(
+				id,
+				blogObject,
+				{
+					headers: { Authorization: `bearer ${user.token}` }
+				}
+			);
+
+			console.log(
+				'App.js, editBlog, updatedBlog',
+				updatedBlog
+			);
+
+			console.log('{ ...updatedBlog, user: user.name }', {
+				...updatedBlog,
+				user : user
+			});
+
+			const updatedBlogs = blogs.map(
+				blog =>
+					blog.id === id
+						? { ...updatedBlog, user: user }
+						: blog
+			);
+
+			setBlogs([ ...updatedBlogs ]);
+
+			displayNotification({
+				message : `the blog ${updatedBlogs.title} by ${updatedBlogs.author} has been updated`,
+				type    : 'success'
+			});
+		} catch (e) {
+			displayNotification({
+				message : `failed to update blog`,
+				type    : 'error'
+			});
+		}
+	};
+
 	const handleLogin = async e => {
 		e.preventDefault();
 		console.log('logging in with: ', username, password);
@@ -141,7 +182,11 @@ const App = () => {
 						</button>
 					)}
 					{blogs.map(blog => (
-						<Blog key={blog.id} blog={blog} />
+						<Blog
+							key={blog.id}
+							blog={blog}
+							editBlog={editBlog}
+						/>
 					))}
 				</div>
 			)}

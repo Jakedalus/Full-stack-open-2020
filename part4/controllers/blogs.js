@@ -133,6 +133,7 @@ blogsRouter.delete('/:id', async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
 	const body = request.body;
+	const type = request.body.type;
 	const newBlog = {
 		title  : body.title,
 		author : body.author,
@@ -142,34 +143,14 @@ blogsRouter.put('/:id', async (request, response) => {
 	console.log('body', body);
 	console.log('newBlog', newBlog);
 
-	const decodedToken = jwt.verify(
-		request.token,
-		process.env.SECRET
-	);
-	if (!request.token || !decodedToken) {
-		return response
-			.status(401)
-			.json({ error: 'token missing or invalid' });
-	}
-	const user = await User.findById(decodedToken.id);
+	console.log('type', type);
 
-	console.log('user', user);
-
-	const blogToUpdate = await Blog.findById(
-		request.params.id
-	);
-
-	console.log('blogToUpdate', blogToUpdate);
-
-	if (blogToUpdate) {
-		console.log(
-			'user._id.toString() === blogToUpdate.user.toString()',
-			user._id.toString() === blogToUpdate.user.toString()
+	if (type === 'add-like') {
+		const blogToUpdate = await Blog.findById(
+			request.params.id
 		);
 
-		if (
-			user._id.toString() === blogToUpdate.user.toString()
-		) {
+		if (blogToUpdate) {
 			const updatedBlog = await Blog.findByIdAndUpdate(
 				request.params.id,
 				newBlog,
@@ -189,7 +170,55 @@ blogsRouter.put('/:id', async (request, response) => {
 			response.status(400).end();
 		}
 	} else {
-		response.status(400).end();
+		const decodedToken = jwt.verify(
+			request.token,
+			process.env.SECRET
+		);
+		if (!request.token || !decodedToken) {
+			return response
+				.status(401)
+				.json({ error: 'token missing or invalid' });
+		}
+		const user = await User.findById(decodedToken.id);
+
+		console.log('user', user);
+
+		const blogToUpdate = await Blog.findById(
+			request.params.id
+		);
+
+		console.log('blogToUpdate', blogToUpdate);
+
+		if (blogToUpdate) {
+			console.log(
+				'user._id.toString() === blogToUpdate.user.toString()',
+				user._id.toString() === blogToUpdate.user.toString()
+			);
+
+			if (
+				user._id.toString() === blogToUpdate.user.toString()
+			) {
+				const updatedBlog = await Blog.findByIdAndUpdate(
+					request.params.id,
+					newBlog,
+					{
+						new : true
+					}
+				);
+
+				console.log('updatedBlog', updatedBlog);
+
+				if (updatedBlog) {
+					response.status(200).json(updatedBlog);
+				} else {
+					response.status(400).end();
+				}
+			} else {
+				response.status(400).end();
+			}
+		} else {
+			response.status(400).end();
+		}
 	}
 });
 
