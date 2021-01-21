@@ -79,7 +79,7 @@ const App = () => {
 				blogObject,
 				{
 					headers : {
-						Authorization: `bearer ${user.token}`
+						Authorization : `bearer ${user.token}`
 					}
 				}
 			);
