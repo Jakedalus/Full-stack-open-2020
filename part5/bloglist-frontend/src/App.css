@@ -24,3 +24,19 @@
 .new-blog-form button {
 	width: 80px;
 }
+
+.blog-listing {
+	margin-bottom: 10px;
+	padding: 5px;
+	border: 2px solid black;
+	border-radius: 5px;
+}
+
+.blog-listing--details {
+	display: flex;
+	flex-direction: column;
+}
+
+.blog-listing--details p {
+	margin: 0;
+}
