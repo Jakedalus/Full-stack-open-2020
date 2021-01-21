@@ -145,11 +145,7 @@ blogsRouter.put('/:id', async (request, response) => {
 
 	console.log('type', type);
 
-	if (type === 'add-like') {
-		const blogToUpdate = await Blog.findById(
-			request.params.id
-		);
-
+	const updateBlog = async blogToUpdate => {
 		if (blogToUpdate) {
 			const updatedBlog = await Blog.findByIdAndUpdate(
 				request.params.id,
@@ -169,6 +165,14 @@ blogsRouter.put('/:id', async (request, response) => {
 		} else {
 			response.status(400).end();
 		}
+	};
+
+	const blogToUpdate = await Blog.findById(
+		request.params.id
+	);
+
+	if (type === 'add-like') {
+		updateBlog(blogToUpdate);
 	} else {
 		const decodedToken = jwt.verify(
 			request.token,
@@ -183,42 +187,55 @@ blogsRouter.put('/:id', async (request, response) => {
 
 		console.log('user', user);
 
-		const blogToUpdate = await Blog.findById(
-			request.params.id
+		console.log(
+			'user._id.toString() === blogToUpdate.user.toString()',
+			user._id.toString() === blogToUpdate.user.toString()
 		);
 
-		console.log('blogToUpdate', blogToUpdate);
-
-		if (blogToUpdate) {
-			console.log(
-				'user._id.toString() === blogToUpdate.user.toString()',
-				user._id.toString() === blogToUpdate.user.toString()
-			);
-
-			if (
-				user._id.toString() === blogToUpdate.user.toString()
-			) {
-				const updatedBlog = await Blog.findByIdAndUpdate(
-					request.params.id,
-					newBlog,
-					{
-						new : true
-					}
-				);
-
-				console.log('updatedBlog', updatedBlog);
-
-				if (updatedBlog) {
-					response.status(200).json(updatedBlog);
-				} else {
-					response.status(400).end();
-				}
-			} else {
-				response.status(400).end();
-			}
+		if (
+			user._id.toString() === blogToUpdate.user.toString()
+		) {
+			updateBlog(blogToUpdate);
 		} else {
 			response.status(400).end();
 		}
+
+		// const blogToUpdate = await Blog.findById(
+		// 	request.params.id
+		// );
+
+		// console.log('blogToUpdate', blogToUpdate);
+
+		// if (blogToUpdate) {
+		// 	console.log(
+		// 		'user._id.toString() === blogToUpdate.user.toString()',
+		// 		user._id.toString() === blogToUpdate.user.toString()
+		// 	);
+
+		// 	if (
+		// 		user._id.toString() === blogToUpdate.user.toString()
+		// 	) {
+		// 		const updatedBlog = await Blog.findByIdAndUpdate(
+		// 			request.params.id,
+		// 			newBlog,
+		// 			{
+		// 				new : true
+		// 			}
+		// 		);
+
+		// 		console.log('updatedBlog', updatedBlog);
+
+		// 		if (updatedBlog) {
+		// 			response.status(200).json(updatedBlog);
+		// 		} else {
+		// 			response.status(400).end();
+		// 		}
+		// 	} else {
+		// 		response.status(400).end();
+		// 	}
+		// } else {
+		// 	response.status(400).end();
+		// }
 	}
 });
 

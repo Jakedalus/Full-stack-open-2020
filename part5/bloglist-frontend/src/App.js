@@ -78,7 +78,9 @@ const App = () => {
 				id,
 				blogObject,
 				{
-					headers: { Authorization: `bearer ${user.token}` }
+					headers : {
+						Authorization: `bearer ${user.token}`
+					}
 				}
 			);
 
@@ -102,7 +104,7 @@ const App = () => {
 			setBlogs([ ...updatedBlogs ]);
 
 			displayNotification({
-				message : `the blog ${updatedBlogs.title} by ${updatedBlogs.author} has been updated`,
+				message : `the blog ${updatedBlog.title} by ${updatedBlog.author} has been updated`,
 				type    : 'success'
 			});
 		} catch (e) {
