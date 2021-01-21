@@ -20,9 +20,6 @@ const App = () => {
 	const [ username, setUsername ] = useState('');
 	const [ password, setPassword ] = useState('');
 	const [ user, setUser ] = useState(null);
-	const [ title, setTitle ] = useState('');
-	const [ author, setAuthor ] = useState('');
-	const [ url, setUrl ] = useState('');
 	const [
 		createBlogFormVisible,
 		setCreateBlogFormVisible
@@ -53,8 +50,8 @@ const App = () => {
 		}, 5000);
 	};
 
-	const handleCreateBlog = async e => {
-		e.preventDefault();
+	const createBlog = async blogObject => {
+		const { title, author, url } = blogObject;
 		console.log('title, author, url:', title, author, url);
 		console.log(
 			'{ headers: { Authorization: `bearer ${user.token}` } }',
@@ -66,9 +63,8 @@ const App = () => {
 		);
 
 		setBlogs([ ...blogs, newBlog ]);
-		setTitle('');
-		setAuthor('');
-		setUrl('');
+
+		setCreateBlogFormVisible(false);
 
 		displayNotification({
 			message : `a new blog ${newBlog.title} by ${newBlog.author} was created`,
@@ -131,13 +127,7 @@ const App = () => {
 					</h2>
 					{createBlogFormVisible && (
 						<NewBlogForm
-							title={title}
-							setTitle={setTitle}
-							author={author}
-							setAuthor={setAuthor}
-							url={url}
-							setUrl={setUrl}
-							handleCreateBlog={handleCreateBlog}
+							createBlog={createBlog}
 							setCreateBlogFormVisible={
 								setCreateBlogFormVisible
 							}

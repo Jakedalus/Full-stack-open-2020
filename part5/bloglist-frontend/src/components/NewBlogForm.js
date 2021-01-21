@@ -2,19 +2,30 @@ import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
 const NewBlogForm = ({
-	title,
-	setTitle,
-	author,
-	setAuthor,
-	url,
-	setUrl,
-	handleCreateBlog,
+	createBlog,
 	setCreateBlogFormVisible
 }) => {
+	const [ title, setTitle ] = useState('');
+	const [ author, setAuthor ] = useState('');
+	const [ url, setUrl ] = useState('');
+
+	const handleAddBlog = event => {
+		event.preventDefault();
+		createBlog({
+			title,
+			author,
+			url
+		});
+
+		setTitle('');
+		setAuthor('');
+		setUrl('');
+	};
+
 	return (
 		<form
 			className='new-blog-form'
-			onSubmit={handleCreateBlog}
+			onSubmit={handleAddBlog}
 		>
 			<input
 				type='text'
