@@ -25,8 +25,10 @@ const App = () => {
 		setCreateBlogFormVisible
 	] = useState(false);
 
-	useEffect(() => {
-		blogService.getAll().then(blogs => setBlogs(blogs));
+	useEffect(async () => {
+		const tempBlogs = await blogService.getAll();
+		tempBlogs.sort((a, b) => +b.likes - +a.likes);
+		setBlogs(tempBlogs);
 	}, []);
 
 	useLayoutEffect(() => {
@@ -62,7 +64,11 @@ const App = () => {
 			{ headers: { Authorization: `bearer ${user.token}` } }
 		);
 
-		setBlogs([ ...blogs, newBlog ]);
+		const tempBlogs = [ ...blogs, newBlog ].sort(
+			(a, b) => +b.likes - +a.likes
+		);
+
+		setBlogs(tempBlogs);
 
 		setCreateBlogFormVisible(false);
 
@@ -101,7 +107,11 @@ const App = () => {
 						: blog
 			);
 
-			setBlogs([ ...updatedBlogs ]);
+			const tempBlogs = [ ...updatedBlogs ].sort(
+				(a, b) => +b.likes - +a.likes
+			);
+
+			setBlogs(tempBlogs);
 
 			displayNotification({
 				message : `the blog ${updatedBlog.title} by ${updatedBlog.author} has been updated`,
