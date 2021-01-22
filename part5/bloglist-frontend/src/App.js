@@ -68,10 +68,9 @@ const App = () => {
 	const createBlog = async blogObject => {
 		const { title, author, url } = blogObject;
 		console.log('title, author, url:', title, author, url);
-		console.log(
-			'{ headers: { Authorization: `bearer ${user.token}` } }',
-			{ headers: { Authorization: `bearer ${user.token}` } }
-		);
+		console.log('headers:', {
+			headers: { Authorization: `bearer ${user.token}` }
+		});
 		const newBlog = await blogService.createNew(
 			{ title, author, url },
 			{ headers: { Authorization: `bearer ${user.token}` } }
