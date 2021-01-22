@@ -134,35 +134,44 @@ const App = () => {
 		}
 	};
 
-	const deleteBlog = async id => {
-		try {
-			const deletedBlog = await blogService.deleteBlog(id, {
-				headers : {
-					Authorization : `bearer ${user.token}`
-				}
-			});
+	const deleteBlog = async (id, title, author) => {
+		const shouldDeleteBlog = window.confirm(
+			`Do you really want to delete ${title} by ${author}?`
+		);
 
-			console.log('deletedBlog', deletedBlog);
+		if (shouldDeleteBlog) {
+			try {
+				const deletedBlog = await blogService.deleteBlog(
+					id,
+					{
+						headers : {
+							Authorization : `bearer ${user.token}`
+						}
+					}
+				);
 
-			const updatedBlogs = blogs.filter(
-				blog => blog.id !== id
-			);
+				console.log('deletedBlog', deletedBlog);
 
-			const tempBlogs = [ ...updatedBlogs ].sort(
-				(a, b) => +b.likes - +a.likes
-			);
+				const updatedBlogs = blogs.filter(
+					blog => blog.id !== id
+				);
 
-			setBlogs(tempBlogs);
+				const tempBlogs = [ ...updatedBlogs ].sort(
+					(a, b) => +b.likes - +a.likes
+				);
 
-			displayNotification({
-				message : `the blog ${deletedBlog.title} has been deleted`,
-				type    : 'success'
-			});
-		} catch (e) {
-			displayNotification({
-				message : `failed to update blog`,
-				type    : 'error'
-			});
+				setBlogs(tempBlogs);
+
+				displayNotification({
+					message : `the blog ${deletedBlog.title} has been deleted`,
+					type    : 'success'
+				});
+			} catch (e) {
+				displayNotification({
+					message : `failed to update blog`,
+					type    : 'error'
+				});
+			}
 		}
 	};
 

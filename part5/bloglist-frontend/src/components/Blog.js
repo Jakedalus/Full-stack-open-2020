@@ -26,7 +26,7 @@ const Blog = ({
 
 	const handleClickDelete = () => {
 		console.log('deleting!');
-		deleteBlog(id);
+		deleteBlog(id, title, author);
 	};
 
 	return (
