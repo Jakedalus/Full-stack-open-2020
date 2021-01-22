@@ -134,6 +134,38 @@ const App = () => {
 		}
 	};
 
+	const deleteBlog = async id => {
+		try {
+			const deletedBlog = await blogService.deleteBlog(id, {
+				headers : {
+					Authorization : `bearer ${user.token}`
+				}
+			});
+
+			console.log('deletedBlog', deletedBlog);
+
+			const updatedBlogs = blogs.filter(
+				blog => blog.id !== id
+			);
+
+			const tempBlogs = [ ...updatedBlogs ].sort(
+				(a, b) => +b.likes - +a.likes
+			);
+
+			setBlogs(tempBlogs);
+
+			displayNotification({
+				message : `the blog ${deletedBlog.title} has been deleted`,
+				type    : 'success'
+			});
+		} catch (e) {
+			displayNotification({
+				message : `failed to update blog`,
+				type    : 'error'
+			});
+		}
+	};
+
 	const handleLogin = async e => {
 		e.preventDefault();
 		console.log('logging in with: ', username, password);
@@ -207,6 +239,7 @@ const App = () => {
 							key={blog.id}
 							blog={blog}
 							editBlog={editBlog}
+							deleteBlog={deleteBlog}
 							currentUser={user}
 						/>
 					))}

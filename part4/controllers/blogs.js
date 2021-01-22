@@ -119,7 +119,7 @@ blogsRouter.delete('/:id', async (request, response) => {
 			console.log('deletedBlog', deletedBlog);
 
 			if (deletedBlog) {
-				response.status(204).end();
+				response.status(200).json(deletedBlog);
 			} else {
 				response.status(400).end();
 			}
