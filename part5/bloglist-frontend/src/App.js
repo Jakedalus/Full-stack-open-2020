@@ -26,10 +26,14 @@ const App = () => {
 		setCreateBlogFormVisible
 	] = useState(false);
 
-	useEffect(async () => {
-		const tempBlogs = await blogService.getAll();
-		tempBlogs.sort((a, b) => +b.likes - +a.likes);
-		setBlogs(tempBlogs);
+	useEffect(() => {
+		async function fetchBlogs() {
+			const tempBlogs = await blogService.getAll();
+
+			tempBlogs.sort((a, b) => +b.likes - +a.likes);
+			setBlogs(tempBlogs);
+		}
+		fetchBlogs();
 	}, []);
 
 	useLayoutEffect(() => {
