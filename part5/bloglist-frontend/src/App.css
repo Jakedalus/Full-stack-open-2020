@@ -21,8 +21,9 @@
 	width: 300px;
 }
 
-.new-blog-form button {
-	width: 80px;
+.blog-listing button {
+	width: 60px;
+	padding: 1px 5px;
 }
 
 .blog-listing {

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-const Blog = ({ blog, editBlog }) => {
+const Blog = ({ blog, editBlog, currentUser }) => {
 	const [ showDetails, setShowDetails ] = useState(false);
 
-	// console.log('blog', blog);
+	console.log('blog', blog);
+	console.log('currentUser', currentUser);
 
 	const { title, author, url, likes, id, user } = blog;
 
@@ -18,6 +19,10 @@ const Blog = ({ blog, editBlog }) => {
 		});
 	};
 
+	const handleClickDelete = () => {
+		console.log('deleting!');
+	};
+
 	return (
 		<div className='blog-listing'>
 			{title} {author}
@@ -29,9 +34,14 @@ const Blog = ({ blog, editBlog }) => {
 					<p>{url}</p>
 					<p>
 						{likes}{' '}
-						<button onClick={handleAddLike}>Like</button>
+						<button onClick={handleAddLike}>like</button>
 					</p>
 					<p>created by {user.name}</p>
+					{currentUser.id === user.id && (
+						<button onClick={handleClickDelete}>
+							delete
+						</button>
+					)}
 				</div>
 			)}
 		</div>

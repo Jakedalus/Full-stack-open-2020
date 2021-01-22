@@ -3,6 +3,7 @@ import React, {
 	useEffect,
 	useLayoutEffect
 } from 'react';
+import jwt from 'jsonwebtoken';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
@@ -37,8 +38,16 @@ const App = () => {
 		);
 		if (loggedInUserJSON) {
 			const user = JSON.parse(loggedInUserJSON);
-			setUser(user);
-			// handleLogin.setToken(user.token);
+
+			console.log('user', user);
+			// console.log('process.env', process.env);
+
+			const decodedToken = jwt.verify(
+				user.token,
+				process.env.REACT_APP_SECRET
+			);
+			console.log('decodedToken', decodedToken);
+			setUser({ ...user, id: decodedToken.id });
 		}
 	}, []);
 
@@ -198,6 +207,7 @@ const App = () => {
 							key={blog.id}
 							blog={blog}
 							editBlog={editBlog}
+							currentUser={user}
 						/>
 					))}
 				</div>
