@@ -38,7 +38,7 @@ test('renders Blog content', () => {
 	);
 });
 
-test('renders extra content after button "View" is clicked', () => {
+test('renders details after "view" button is clicked', () => {
 	const blog = {
 		title  : 'Test Title',
 		author : 'Test Author',
