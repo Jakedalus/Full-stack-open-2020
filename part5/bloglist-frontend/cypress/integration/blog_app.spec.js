@@ -55,4 +55,35 @@ describe('Blog App', function() {
 				);
 		});
 	});
+
+	describe('When logged in', function() {
+		beforeEach(function() {
+			cy.get('#username').type('test_user');
+			cy.get('#password').type('abc123');
+			cy.get('#login-button').click();
+		});
+
+		it.only('A blog can be created', function() {
+			cy.contains('new note').click();
+			cy.get('#title').type('test title');
+			cy.get('#author').type('test author');
+			cy.get('#url').type('www.test.com');
+			cy.contains('create').click();
+
+			cy.contains('test title');
+			cy.contains('test author');
+			cy
+				.get('.success')
+				.should(
+					'contain',
+					'a new blog test title by test author was created'
+				);
+			cy
+				.get('.success')
+				.should('have.css', 'color', 'rgb(0, 128, 0)');
+			cy
+				.get('.success')
+				.should('have.css', 'color', 'rgb(0, 128, 0)');
+		});
+	});
 });
