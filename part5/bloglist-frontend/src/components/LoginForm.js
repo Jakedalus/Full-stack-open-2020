@@ -13,6 +13,7 @@ const LoginForm = ({
 			placeholder='username'
 			value={username}
 			name='Username'
+			id='username'
 			onChange={({ target }) => setUsername(target.value)}
 		/>
 		<input
@@ -20,9 +21,10 @@ const LoginForm = ({
 			placeholder='password'
 			value={password}
 			name='Password'
+			id='password'
 			onChange={({ target }) => setPassword(target.value)}
 		/>
-		<button>login</button>
+		<button id='login-button'>login</button>
 	</form>
 );
 
