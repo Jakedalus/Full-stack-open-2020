@@ -50,6 +50,9 @@ blogsRouter.post('/', async (request, response) => {
 		request.token,
 		process.env.SECRET
 	);
+
+	// console.log('decodedToken', decodedToken);
+
 	if (!decodedToken) {
 		return response
 			.status(401)

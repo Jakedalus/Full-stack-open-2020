@@ -66,7 +66,7 @@ describe('Blog App', function() {
 			});
 		});
 
-		it.only('A new blog can be created', function() {
+		it('A new blog can be created', function() {
 			cy.contains('new note').click();
 			cy.get('#title').type('test title');
 			cy.get('#author').type('test author');
@@ -87,6 +87,27 @@ describe('Blog App', function() {
 			cy
 				.get('.success')
 				.should('have.css', 'color', 'rgb(0, 128, 0)');
+		});
+
+		describe('and a note exists', function() {
+			beforeEach(function() {
+				cy.createBlog({
+					title  : 'test title',
+					author : 'test author',
+					url    : 'www.test.com'
+				});
+			});
+
+			it.only('should be able to add a like', function() {
+				cy.contains('view').click();
+				cy.contains('like').click();
+
+				cy.get('#likes').should('contain', '1');
+
+				cy.contains('like').click();
+
+				cy.get('#likes').should('contain', '2');
+			});
 		});
 	});
 });

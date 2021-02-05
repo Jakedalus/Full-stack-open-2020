@@ -9,7 +9,7 @@ const Blog = ({
 }) => {
 	const [ showDetails, setShowDetails ] = useState(false);
 
-	// console.log('blog', blog);
+	console.log('blog', blog);
 	// console.log('currentUser', currentUser);
 
 	const { title, author, url, likes, id, user } = blog;
@@ -40,7 +40,7 @@ const Blog = ({
 			{showDetails && (
 				<div className='blog-listing--details'>
 					<p>{url}</p>
-					<p>
+					<p id='likes'>
 						{likes}{' '}
 						<button onClick={handleAddLike}>like</button>
 					</p>
