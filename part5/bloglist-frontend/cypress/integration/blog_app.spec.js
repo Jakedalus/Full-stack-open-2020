@@ -58,12 +58,15 @@ describe('Blog App', function() {
 
 	describe('When logged in', function() {
 		beforeEach(function() {
-			cy.get('#username').type('test_user');
-			cy.get('#password').type('abc123');
-			cy.get('#login-button').click();
+			///// BYPASS THE UI!!
+
+			cy.login({
+				username : 'test_user',
+				password : 'abc123'
+			});
 		});
 
-		it.only('A blog can be created', function() {
+		it.only('A new blog can be created', function() {
 			cy.contains('new note').click();
 			cy.get('#title').type('test title');
 			cy.get('#author').type('test author');
