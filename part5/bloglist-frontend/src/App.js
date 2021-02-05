@@ -69,7 +69,7 @@ const App = () => {
 		const { title, author, url } = blogObject;
 		console.log('title, author, url:', title, author, url);
 		console.log('headers:', {
-			headers: { Authorization: `bearer ${user.token}` }
+			headers : { Authorization: `bearer ${user.token}` }
 		});
 		const newBlog = await blogService.createNew(
 			{ title, author, url },
@@ -246,15 +246,17 @@ const App = () => {
 							new note
 						</button>
 					)}
-					{blogs.map(blog => (
-						<Blog
-							key={blog.id}
-							blog={blog}
-							editBlog={editBlog}
-							deleteBlog={deleteBlog}
-							currentUser={user}
-						/>
-					))}
+					<div id='blog-list'>
+						{blogs.map(blog => (
+							<Blog
+								key={blog.id}
+								blog={blog}
+								editBlog={editBlog}
+								deleteBlog={deleteBlog}
+								currentUser={user}
+							/>
+						))}
+					</div>
 				</div>
 			)}
 		</div>

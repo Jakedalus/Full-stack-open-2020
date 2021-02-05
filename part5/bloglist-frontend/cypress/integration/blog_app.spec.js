@@ -1,8 +1,14 @@
 describe('Blog App', function() {
-	const user = {
+	const user1 = {
 		username : 'test_user',
 		name     : 'Francis Bacon',
 		password : 'abc123',
+		blogs    : []
+	};
+	const user2 = {
+		username : 'test_user_2',
+		name     : 'M. John Harrison',
+		password : 'secret',
 		blogs    : []
 	};
 	beforeEach(function() {
@@ -14,7 +20,12 @@ describe('Blog App', function() {
 		cy.request(
 			'POST',
 			'http://localhost:3001/api/users',
-			user
+			user1
+		);
+		cy.request(
+			'POST',
+			'http://localhost:3001/api/users',
+			user2
 		);
 		cy.visit('http://localhost:3000');
 	});
@@ -59,6 +70,18 @@ describe('Blog App', function() {
 	describe('When logged in', function() {
 		beforeEach(function() {
 			///// BYPASS THE UI!!
+			cy.login({
+				username : 'test_user_2',
+				password : 'secret'
+			});
+
+			cy.createBlog({
+				title  : 'test title 2',
+				author : 'test author 2',
+				url    : 'www.test.com 2'
+			});
+
+			localStorage.clear();
 
 			cy.login({
 				username : 'test_user',
@@ -98,7 +121,7 @@ describe('Blog App', function() {
 				});
 			});
 
-			it.only('should be able to add a like', function() {
+			it('should be able to add a like', function() {
 				cy.contains('view').click();
 				cy.contains('like').click();
 
@@ -108,6 +131,37 @@ describe('Blog App', function() {
 
 				cy.get('#likes').should('contain', '2');
 			});
+
+			it('user can delete their own blog', function() {
+				cy.createBlog({
+					title  : 'test title 3',
+					author : 'test author 3',
+					url    : 'www.test.com 3'
+				});
+				cy
+					.contains('test title 3')
+					.contains('view')
+					.click();
+				cy.get('#delete').click();
+
+				cy.contains(
+					'the blog test title 3 has been deleted'
+				);
+				cy
+					.get('#blog-list')
+					.should('not.contain', 'test title 3');
+			});
+
+			it.only(
+				"user cannot delete another user's blog",
+				function() {
+					cy
+						.contains('test title 2')
+						.contains('view')
+						.click();
+					cy.get('#delete').should('not.exist');
+				}
+			);
 		});
 	});
 });

@@ -46,7 +46,7 @@ const Blog = ({
 					</p>
 					<p>created by {user.name}</p>
 					{currentUser.id === user.id && (
-						<button onClick={handleClickDelete}>
+						<button id='delete' onClick={handleClickDelete}>
 							delete
 						</button>
 					)}
