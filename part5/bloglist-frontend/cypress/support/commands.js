@@ -44,6 +44,32 @@ Cypress.Commands.add(
 	}
 );
 
+Cypress.Commands.add(
+	'likeBlog',
+	({ title, author, url, id, user, likes }) => {
+		cy.request({
+			url      : `http://localhost:3000/api/blogs/${id}`,
+			method   : 'PUT',
+			body     : {
+				title,
+				author,
+				url,
+				id,
+				user,
+				likes  : likes + 1,
+				type   : 'add-like'
+			},
+			hheaders : {
+				Authorization : `bearer ${JSON.parse(
+					localStorage.getItem('loggedInUser')
+				).token}`
+			}
+		});
+
+		cy.visit('http://localhost:3000');
+	}
+);
+
 //
 //
 // -- This is a child command --

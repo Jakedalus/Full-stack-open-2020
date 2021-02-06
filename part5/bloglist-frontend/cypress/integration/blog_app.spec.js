@@ -45,7 +45,7 @@ describe('Blog App', function() {
 			cy.get('#password').type('abc123');
 			cy.get('#login-button').click();
 
-			cy.contains(`${user.name} is logged in`);
+			cy.contains(`${user1.name} is logged in`);
 		});
 
 		it('fails with incorrect credentials', function() {
@@ -67,7 +67,7 @@ describe('Blog App', function() {
 		});
 	});
 
-	describe('When logged in', function() {
+	describe("When logged in and another user's blog exists", function() {
 		beforeEach(function() {
 			///// BYPASS THE UI!!
 			cy.login({
@@ -152,14 +152,48 @@ describe('Blog App', function() {
 					.should('not.contain', 'test title 3');
 			});
 
+			it("user cannot delete another user's blog", function() {
+				cy
+					.contains('test title 2')
+					.contains('view')
+					.click();
+				cy.get('#delete').should('not.exist');
+			});
+
 			it.only(
-				"user cannot delete another user's blog",
+				'blogs are ordered according to number of likes',
 				function() {
 					cy
-						.contains('test title 2')
-						.contains('view')
-						.click();
-					cy.get('#delete').should('not.exist');
+						.request(
+							'GET',
+							'http://localhost:3001/api/blogs'
+						)
+						.then(response => {
+							const test1 = response.body[0];
+							const test2 = response.body[1];
+							console.log('blogs:', test1, test2);
+
+							cy.likeBlog(test2);
+
+							cy
+								.get('.blog-listing')
+								.first()
+								.contains('test title test author');
+
+							cy.likeBlog(test1);
+							cy.likeBlog({ ...test1, likes: 1 });
+
+							cy
+								.get('.blog-listing')
+								.first()
+								.contains('test title 2 test author 2');
+						});
+
+					//////BYPASS UI!!!!
+					// cy
+					// 	.contains('test title test author')
+					// 	.contains('view')
+					// 	.click();
 				}
 			);
 		});
