@@ -17,13 +17,6 @@ const asObject = anecdote => {
 	};
 };
 
-function test() {
-	return 'test';
-}
-function test2() {
-	return 'test2';
-}
-
 const initialState = anecdotesAtStart.map(asObject);
 
 const reducer = (state = initialState, action) => {
