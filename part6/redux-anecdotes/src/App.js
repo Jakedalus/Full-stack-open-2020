@@ -10,8 +10,6 @@ const App = () => {
 		dispatch({ type: 'UPVOTE', data: { id } });
 	};
 
-	//test comment
-
 	return (
 		<div>
 			<h2>Anecdotes</h2>
