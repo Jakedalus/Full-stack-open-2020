@@ -3,9 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
 	const anecdotes = useSelector(state => state).sort(
-		(a, b) => a.likes > b.likes
+		(a, b) => a.votes < b.votes
 	);
 	const dispatch = useDispatch();
+
+	console.log('anecdotes', anecdotes);
 
 	const vote = id => {
 		console.log('vote', id);
