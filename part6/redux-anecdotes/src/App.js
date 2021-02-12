@@ -2,7 +2,9 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
-	const anecdotes = useSelector(state => state);
+	const anecdotes = useSelector(state => state).sort(
+		(a, b) => a.likes > b.likes
+	);
 	const dispatch = useDispatch();
 
 	const vote = id => {
