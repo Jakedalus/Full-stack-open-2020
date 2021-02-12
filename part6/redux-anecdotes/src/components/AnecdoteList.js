@@ -12,7 +12,7 @@ function AnecdoteList() {
 
 	const handleVote = id => {
 		console.log('vote', id);
-		dispatch({ type: 'UPVOTE', data: { id } });
+		dispatch(upvote(id));
 	};
 
 	return (
