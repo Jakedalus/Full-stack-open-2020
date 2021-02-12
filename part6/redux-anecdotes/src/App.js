@@ -10,6 +10,22 @@ const App = () => {
 		dispatch({ type: 'UPVOTE', data: { id } });
 	};
 
+	const createAnecdote = e => {
+		e.preventDefault();
+		console.log('e.target', e.target);
+		const anecdote = document.getElementById('new-anecdote')
+			.value;
+		document.getElementById('new-anecdote').value = '';
+		console.log('anecdote', anecdote);
+		dispatch({
+			type : 'NEW_ANECDOTE',
+			data : {
+				content : anecdote,
+				votes   : 0
+			}
+		});
+	};
+
 	return (
 		<div>
 			<h2>Anecdotes</h2>
@@ -27,9 +43,9 @@ const App = () => {
 			<h2>create new</h2>
 			<form>
 				<div>
-					<input />
+					<input id='new-anecdote' />
 				</div>
-				<button>create</button>
+				<button onClick={createAnecdote}>create</button>
 			</form>
 		</div>
 	);
