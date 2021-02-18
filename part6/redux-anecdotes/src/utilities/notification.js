@@ -7,11 +7,7 @@ export const displayNotification = (
 	notification,
 	dispatch
 ) => {
-	dispatch(
-		createNotification(
-			`Created new anecdote ${notification}`
-		)
-	);
+	dispatch(createNotification(notification));
 	setTimeout(() => {
 		dispatch(clearNotification());
 	}, 5000);
