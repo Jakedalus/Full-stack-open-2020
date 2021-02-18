@@ -4,9 +4,17 @@ import { upvote } from '../reducers/anecdoteReducer';
 import { displayNotification } from '../utilities/notification';
 
 function AnecdoteList() {
-	const anecdotes = useSelector(
-		state => state.anecdotes
-	).sort((a, b) => a.votes < b.votes);
+	const filter = useSelector(state => state.filter);
+	console.log('filter', filter);
+
+	const anecdotes = useSelector(state => state.anecdotes)
+		.filter(anecdote =>
+			anecdote.content
+				.toLowerCase()
+				.includes(filter.toLowerCase())
+		)
+		.sort((a, b) => a.votes < b.votes);
+
 	const dispatch = useDispatch();
 
 	console.log('anecdotes', anecdotes);
