@@ -1,8 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
-import { displayNotification } from '../utilities/notification';
-import anecdoteService from '../services/anecdotes';
+import { setNotification } from '../reducers/notificationReducer';
 
 function AnecdoteForm() {
 	const dispatch = useDispatch();
@@ -17,9 +16,16 @@ function AnecdoteForm() {
 
 		dispatch(createAnecdote(anecdote));
 
-		displayNotification(
-			`Created new anecdote: ${anecdote}`,
-			dispatch
+		// displayNotification(
+		// 	`Created new anecdote: ${anecdote}`,
+		// 	dispatch
+		// );
+
+		dispatch(
+			setNotification(
+				`Created new anecdote: ${anecdote}`,
+				5000
+			)
 		);
 	};
 

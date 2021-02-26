@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { upvote } from '../reducers/anecdoteReducer';
-import { displayNotification } from '../utilities/notification';
+import { setNotification } from '../reducers/notificationReducer';
 
 function AnecdoteList() {
 	const filter = useSelector(state => state.filter);
@@ -22,9 +22,8 @@ function AnecdoteList() {
 	const handleVote = ({ id, content }) => {
 		console.log('vote', id);
 		dispatch(upvote(id));
-		displayNotification(
-			`Upvoted anecdote: ${content}`,
-			dispatch
+		dispatch(
+			setNotification(`Upvoted anecdote: ${content}`, 5000)
 		);
 	};
 

@@ -1,5 +1,20 @@
 // const testNotification = 'test notification';
 
+export const setNotification = (notification, time) => {
+	console.log(
+		'setNotification, notification, time',
+		notification,
+		time
+	);
+	return dispatch => {
+		dispatch(createNotification(notification));
+
+		setTimeout(() => {
+			dispatch(clearNotification());
+		}, time);
+	};
+};
+
 export const createNotification = notification => {
 	return {
 		type         : 'NEW_NOTIFICATION',
