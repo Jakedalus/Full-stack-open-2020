@@ -35,9 +35,27 @@ export const createAnecdote = data => {
 };
 
 export const upvote = id => {
-	return {
-		type : 'UPVOTE',
-		data : { id }
+	return async dispatch => {
+		const anecdoteToUpdate = await anecdoteService.getOne(
+			id
+		);
+		const updatedAnecdote = await anecdoteService.update(
+			id,
+			{
+				...anecdoteToUpdate,
+				votes : anecdoteToUpdate.votes + 1
+			}
+		);
+
+		console.log(
+			'upvote, anecdoteReducer, updatedAnecdote:',
+			updatedAnecdote
+		);
+
+		dispatch({
+			type : 'UPVOTE',
+			data : { id }
+		});
 	};
 };
 
