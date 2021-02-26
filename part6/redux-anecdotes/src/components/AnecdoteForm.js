@@ -14,10 +14,8 @@ function AnecdoteForm() {
 			.value;
 		document.getElementById('new-anecdote').value = '';
 		console.log('anecdote', anecdote);
-		const newAnecdote = await anecdoteService.createNew(
-			anecdote
-		);
-		dispatch(createAnecdote(newAnecdote));
+
+		dispatch(createAnecdote(anecdote));
 
 		displayNotification(
 			`Created new anecdote: ${anecdote}`,
