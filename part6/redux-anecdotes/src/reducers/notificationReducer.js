@@ -7,18 +7,22 @@ export const setNotification = (notification, time) => {
 		time
 	);
 	return dispatch => {
-		dispatch(createNotification(notification));
-
-		setTimeout(() => {
+		const timerId = setTimeout(() => {
 			dispatch(clearNotification());
 		}, time);
+
+		dispatch(createNotification(notification, timerId));
 	};
 };
 
-export const createNotification = notification => {
+export const createNotification = (
+	notification,
+	timerId
+) => {
 	return {
 		type         : 'NEW_NOTIFICATION',
-		notification
+		notification,
+		timerId
 	};
 };
 
@@ -33,8 +37,27 @@ const reducer = (state = '', action) => {
 	console.log('action', action);
 
 	switch (action.type) {
-		case 'NEW_NOTIFICATION':
-			return action.notification;
+		case 'NEW_NOTIFICATION': {
+			console.log(
+				'state.notification, action.notification',
+				state.notification,
+				action.notification
+			);
+			console.log(
+				'clearing last notification!!',
+				state.notification &&
+					state.notification !== action.notification
+			);
+
+			if (
+				state.notification &&
+				state.notification !== action.notification
+			) {
+				clearTimeout(state.timerId);
+			}
+
+			return action;
+		}
 		case 'CLEAR_NOTIFICATION':
 			return '';
 		default:

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 const Notification = () => {
 	const notification = useSelector(
-		state => state.notification
+		state => state.notification.notification
 	);
 
 	console.log('notification', notification);
