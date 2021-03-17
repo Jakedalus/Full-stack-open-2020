@@ -114,6 +114,12 @@ const CreateNew = props => {
 
 	const history = useHistory();
 
+	const reset = () => {
+		content.reset();
+		author.reset();
+		info.reset();
+	};
+
 	const handleSubmit = e => {
 		e.preventDefault();
 		props.addNew({
@@ -145,7 +151,10 @@ const CreateNew = props => {
 					url for more info
 					<input {...info} />
 				</div>
-				<button>create</button>
+				<button type='submit'>create</button>
+				<button type='button' onClick={reset}>
+					reset
+				</button>
 			</form>
 		</div>
 	);
