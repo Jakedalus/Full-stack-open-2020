@@ -18,10 +18,10 @@ const useField = type => {
 const useResource = baseUrl => {
 	const [ resources, setResources ] = useState([]);
 
-	const getAll = () =>
-		axios.get(baseUrl).then(response => {
-			setResources(response.data);
-		});
+	const getAll = async () => {
+		const response = await axios.get(baseUrl);
+		setResources(response.data);
+	};
 
 	useEffect(
 		() => {
