@@ -1,12 +1,17 @@
 const path = require('path');
 
 const config = {
-	entry  : [ '@babel/polyfill', './src/index.js' ],
-	output : {
+	entry     : [ '@babel/polyfill', './src/index.js' ],
+	output    : {
 		path     : path.resolve(__dirname, 'build'),
 		filename : 'main.js'
 	},
-	module : {
+	devServer : {
+		contentBase : path.resolve(__dirname, 'build'),
+		compress    : true,
+		port        : 3000
+	},
+	module    : {
 		rules : [
 			{
 				test    : /\.js$/,
