@@ -1,0 +1,32 @@
+import blogService from '../services/blogs';
+
+export const initializeBlogs = () => {
+	console.log('initializeBlogs');
+	return async dispatch => {
+		console.log('getting blogs...');
+		const blogs = await blogService.getAll();
+
+		blogs.sort((a, b) => +b.likes - +a.likes);
+
+		console.log(`initializeBlogs, blogs`, blogs);
+
+		dispatch({
+			type : 'INIT_BLOGS',
+			data : blogs
+		});
+	};
+};
+
+const reducer = (state = [], action) => {
+	console.log('state now: ', state);
+	console.log('action', action);
+
+	switch (action.type) {
+		case 'INIT_BLOGS':
+			return action.data;
+		default:
+			return state;
+	}
+};
+
+export default reducer;

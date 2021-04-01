@@ -3,6 +3,7 @@ import React, {
 	useEffect,
 	useLayoutEffect
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
@@ -11,12 +12,18 @@ import Notification from './components/Notification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import './App.css';
+import { initializeBlogs } from './reducers/blogReducer';
 
 // "username": "sample_username99",
 // "password": "samplesample"
 
 const App = () => {
-	const [ blogs, setBlogs ] = useState([]);
+	const dispatch = useDispatch();
+
+	const blogs = useSelector(state => state.blogs);
+	// .sort((a, b) => a.votes < b.votes);
+
+	// const [ blogs, setBlogs ] = useState([]);
 	const [ notification, setNotification ] = useState(null);
 	const [ username, setUsername ] = useState('');
 	const [ password, setPassword ] = useState('');
@@ -26,15 +33,23 @@ const App = () => {
 		setCreateBlogFormVisible
 	] = useState(false);
 
-	useEffect(() => {
-		async function fetchBlogs() {
-			const tempBlogs = await blogService.getAll();
-
-			tempBlogs.sort((a, b) => +b.likes - +a.likes);
-			setBlogs(tempBlogs);
-		}
-		fetchBlogs();
-	}, []);
+	useEffect(
+		() => {
+			// async function fetchBlogs() {
+			// 	const tempBlogs = await blogService.getAll();
+			// 	tempBlogs.sort((a, b) => +b.likes - +a.likes);
+			// 	setBlogs(tempBlogs);
+			// }
+			// fetchBlogs();
+			console.log(
+				`Initialize Blogs!`,
+				dispatch,
+				initializeBlogs
+			);
+			dispatch(initializeBlogs());
+		},
+		[ dispatch ]
+	);
 
 	useLayoutEffect(() => {
 		const loggedInUserJSON = window.localStorage.getItem(
@@ -80,7 +95,7 @@ const App = () => {
 			(a, b) => +b.likes - +a.likes
 		);
 
-		setBlogs(tempBlogs);
+		// setBlogs(tempBlogs);
 
 		setCreateBlogFormVisible(false);
 
@@ -123,7 +138,7 @@ const App = () => {
 				(a, b) => +b.likes - +a.likes
 			);
 
-			setBlogs(tempBlogs);
+			// setBlogs(tempBlogs);
 
 			displayNotification({
 				message : `the blog ${updatedBlog.title} by ${updatedBlog.author} has been updated`,
@@ -163,7 +178,7 @@ const App = () => {
 					(a, b) => +b.likes - +a.likes
 				);
 
-				setBlogs(tempBlogs);
+				// setBlogs(tempBlogs);
 
 				displayNotification({
 					message : `the blog ${deletedBlog.title} has been deleted`,

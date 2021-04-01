@@ -8,6 +8,7 @@ const getAll = async () => {
 	// 	console.log('response', response);
 	// 	return response.data;
 	// });
+	console.log('getAll');
 
 	const response = await axios.get(baseUrl);
 
