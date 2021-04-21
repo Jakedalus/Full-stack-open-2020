@@ -10,10 +10,10 @@ import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
 import blogService from './services/blogs';
-import loginService from './services/login';
 import './App.css';
 import { initializeBlogs } from './reducers/blogReducer';
 import { login, logout } from './reducers/userReducer';
+import { setNotification } from './reducers/notificationReducer';
 
 // "username": "sample_username99",
 // "password": "samplesample"
@@ -23,11 +23,14 @@ const App = () => {
 
 	const blogs = useSelector(state => state.blogs);
 	const user = useSelector(state => state.user);
+	const notification = useSelector(
+		state => state.notification
+	);
 
 	console.log(`user`, user);
 
 	// const [ blogs, setBlogs ] = useState([]);
-	const [ notification, setNotification ] = useState(null);
+	// const [ notification, setNotification ] = useState(null);
 
 	// const [ user, setUser ] = useState(null);
 	const [
@@ -81,13 +84,15 @@ const App = () => {
 	);
 
 	const displayNotification = ({ message, type }) => {
-		setNotification({
-			message,
-			type
-		});
-		setTimeout(() => {
-			setNotification(null);
-		}, 5000);
+		dispatch(
+			setNotification(
+				{
+					message,
+					type
+				},
+				5000
+			)
+		);
 	};
 
 	// const createBlog = async blogObject => {

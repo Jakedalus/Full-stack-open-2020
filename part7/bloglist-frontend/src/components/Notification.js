@@ -2,7 +2,7 @@ import React from 'react';
 
 const Notification = ({ notification }) => {
 	console.log('notification', notification);
-	const { message, type } = notification;
+	const { message, type } = notification.notification;
 	console.log('message, type', message, type);
 	return (
 		<div
