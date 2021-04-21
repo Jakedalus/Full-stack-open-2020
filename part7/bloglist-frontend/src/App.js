@@ -13,6 +13,7 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 import './App.css';
 import { initializeBlogs } from './reducers/blogReducer';
+import { login } from './reducers/userReducer';
 
 // "username": "sample_username99",
 // "password": "samplesample"
@@ -52,24 +53,32 @@ const App = () => {
 		[ dispatch ]
 	);
 
-	useLayoutEffect(() => {
-		const loggedInUserJSON = window.localStorage.getItem(
-			'loggedInUser'
-		);
-		if (loggedInUserJSON) {
-			const user = JSON.parse(loggedInUserJSON);
-
-			console.log('user', user);
-			// console.log('process.env', process.env);
-
-			const decodedToken = jwt.verify(
-				user.token,
-				process.env.REACT_APP_SECRET
+	useLayoutEffect(
+		() => {
+			const loggedInUserJSON = window.localStorage.getItem(
+				'loggedInUser'
 			);
-			console.log('decodedToken', decodedToken);
-			// setUser({ ...user, id: decodedToken.id });
-		}
-	}, []);
+			console.log(`loggedInUserJSON`, loggedInUserJSON);
+
+			if (loggedInUserJSON) {
+				const user = JSON.parse(loggedInUserJSON);
+
+				console.log('user', user);
+				// console.log('process.env', process.env);
+
+				const decodedToken = jwt.verify(
+					user.token,
+					process.env.REACT_APP_SECRET
+				);
+				console.log('decodedToken', decodedToken);
+
+				dispatch(login(user));
+
+				// setUser({ ...user, id: decodedToken.id });
+			}
+		},
+		[ dispatch ]
+	);
 
 	const displayNotification = ({ message, type }) => {
 		setNotification({
