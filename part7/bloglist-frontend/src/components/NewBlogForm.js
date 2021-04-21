@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
+import { createBlog } from '../reducers/blogReducer';
 
 const NewBlogForm = ({
-	createBlog,
-	setCreateBlogFormVisible
+	setCreateBlogFormVisible,
+	displayNotification
 }) => {
 	const [ title, setTitle ] = useState('');
 	const [ author, setAuthor ] = useState('');
 	const [ url, setUrl ] = useState('');
 
+	const handleCreateBlog = blogObject => {
+		console.log('blogObject:', blogObject);
+		// console.log('headers:', {
+		// 	headers : { Authorization: `bearer ${user.token}` }
+		// });
+		createBlog(blogObject);
+
+		// setBlogs(tempBlogs);
+
+		setCreateBlogFormVisible(false);
+
+		displayNotification({
+			message : `a new blog ${blogObject.title} by ${blogObject.author} was created`,
+			type    : 'success'
+		});
+	};
+
 	const handleAddBlog = event => {
 		event.preventDefault();
-		createBlog({
+		handleCreateBlog({
 			title,
 			author,
 			url

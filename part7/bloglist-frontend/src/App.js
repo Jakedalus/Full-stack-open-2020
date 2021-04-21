@@ -21,13 +21,14 @@ const App = () => {
 	const dispatch = useDispatch();
 
 	const blogs = useSelector(state => state.blogs);
-	// .sort((a, b) => a.votes < b.votes);
+	const user = useSelector(state => state.user);
+
+	console.log(`user`, user);
 
 	// const [ blogs, setBlogs ] = useState([]);
 	const [ notification, setNotification ] = useState(null);
-	const [ username, setUsername ] = useState('');
-	const [ password, setPassword ] = useState('');
-	const [ user, setUser ] = useState(null);
+
+	// const [ user, setUser ] = useState(null);
 	const [
 		createBlogFormVisible,
 		setCreateBlogFormVisible
@@ -66,7 +67,7 @@ const App = () => {
 				process.env.REACT_APP_SECRET
 			);
 			console.log('decodedToken', decodedToken);
-			setUser({ ...user, id: decodedToken.id });
+			// setUser({ ...user, id: decodedToken.id });
 		}
 	}, []);
 
@@ -80,30 +81,30 @@ const App = () => {
 		}, 5000);
 	};
 
-	const createBlog = async blogObject => {
-		const { title, author, url } = blogObject;
-		console.log('title, author, url:', title, author, url);
-		console.log('headers:', {
-			headers : { Authorization: `bearer ${user.token}` }
-		});
-		const newBlog = await blogService.createNew(
-			{ title, author, url },
-			{ headers: { Authorization: `bearer ${user.token}` } }
-		);
+	// const createBlog = async blogObject => {
+	// 	const { title, author, url } = blogObject;
+	// 	console.log('title, author, url:', title, author, url);
+	// 	console.log('headers:', {
+	// 		headers : { Authorization: `bearer ${user.token}` }
+	// 	});
+	// 	const newBlog = await blogService.createNew(
+	// 		{ title, author, url },
+	// 		{ headers: { Authorization: `bearer ${user.token}` } }
+	// 	);
 
-		const tempBlogs = [ ...blogs, newBlog ].sort(
-			(a, b) => +b.likes - +a.likes
-		);
+	// 	const tempBlogs = [ ...blogs, newBlog ].sort(
+	// 		(a, b) => +b.likes - +a.likes
+	// 	);
 
-		// setBlogs(tempBlogs);
+	// 	// setBlogs(tempBlogs);
 
-		setCreateBlogFormVisible(false);
+	// 	setCreateBlogFormVisible(false);
 
-		displayNotification({
-			message : `a new blog ${newBlog.title} by ${newBlog.author} was created`,
-			type    : 'success'
-		});
-	};
+	// 	displayNotification({
+	// 		message : `a new blog ${newBlog.title} by ${newBlog.author} was created`,
+	// 		type    : 'success'
+	// 	});
+	// };
 
 	const editBlog = async (id, blogObject) => {
 		try {
@@ -193,37 +194,37 @@ const App = () => {
 		}
 	};
 
-	const handleLogin = async e => {
-		e.preventDefault();
-		console.log('logging in with: ', username, password);
-		try {
-			const user = await loginService.login({
-				username,
-				password
-			});
+	// const handleLogin = async e => {
+	// 	e.preventDefault();
+	// 	console.log('logging in with: ', username, password);
+	// 	try {
+	// 		const user = await loginService.login({
+	// 			username,
+	// 			password
+	// 		});
 
-			window.localStorage.setItem(
-				'loggedInUser',
-				JSON.stringify(user)
-			);
+	// 		window.localStorage.setItem(
+	// 			'loggedInUser',
+	// 			JSON.stringify(user)
+	// 		);
 
-			setUser(user);
-			setUsername('');
-			setPassword('');
+	// 		setUser(user);
+	// 		setUsername('');
+	// 		setPassword('');
 
-			console.log('user', user);
-		} catch (exception) {
-			console.log('exception', exception);
-			displayNotification({
-				message : 'Wrong credentials',
-				type    : 'error'
-			});
-		}
-	};
+	// 		console.log('user', user);
+	// 	} catch (exception) {
+	// 		console.log('exception', exception);
+	// 		displayNotification({
+	// 			message : 'Wrong credentials',
+	// 			type    : 'error'
+	// 		});
+	// 	}
+	// };
 
 	const handleLogout = e => {
 		window.localStorage.removeItem('loggedInUser');
-		setUser(null);
+		// setUser(null);
 	};
 
 	return (
@@ -232,13 +233,13 @@ const App = () => {
 			{notification && (
 				<Notification notification={notification} />
 			)}
-			{user === null ? (
+			{user.length === 0 ? (
 				<LoginForm
-					username={username}
-					password={password}
-					setUsername={setUsername}
-					setPassword={setPassword}
-					handleLogin={handleLogin}
+				// username={username}
+				// password={password}
+				// setUsername={setUsername}
+				// setPassword={setPassword}
+				// handleLogin={handleLogin}
 				/>
 			) : (
 				<div>
@@ -248,7 +249,8 @@ const App = () => {
 					</h2>
 					{createBlogFormVisible && (
 						<NewBlogForm
-							createBlog={createBlog}
+							// createBlog={createBlog}
+							displayNotification={displayNotification}
 							setCreateBlogFormVisible={
 								setCreateBlogFormVisible
 							}
