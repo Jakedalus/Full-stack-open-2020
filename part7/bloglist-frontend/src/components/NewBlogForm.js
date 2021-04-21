@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { createBlog } from '../reducers/blogReducer';
 
 const NewBlogForm = ({
@@ -9,12 +10,24 @@ const NewBlogForm = ({
 	const [ author, setAuthor ] = useState('');
 	const [ url, setUrl ] = useState('');
 
+	const user = useSelector(state => state.user);
+
+	const dispatch = useDispatch();
+
 	const handleCreateBlog = blogObject => {
 		console.log('blogObject:', blogObject);
-		// console.log('headers:', {
-		// 	headers : { Authorization: `bearer ${user.token}` }
-		// });
-		createBlog(blogObject);
+
+		const headers = {
+			headers : { Authorization: `bearer ${user.token}` }
+		};
+
+		console.log('headers:', headers);
+		// const newBlog = await blogService.createNew(
+		// 	{ title, author, url },
+		// 	{ headers: { Authorization: `bearer ${user.token}` } }
+		// );
+
+		dispatch(createBlog(blogObject, headers));
 
 		// setBlogs(tempBlogs);
 

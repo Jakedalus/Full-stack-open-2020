@@ -1,11 +1,15 @@
 import blogService from '../services/blogs';
 
-export const createBlog = data => {
+export const createBlog = (data, config) => {
 	console.log('createBlog, data', data);
+	console.log('createBlog, config', config);
 
 	return async dispatch => {
 		console.log('creating blog..');
-		const newBlog = await blogService.createNew(data);
+		const newBlog = await blogService.createNew(
+			data,
+			config
+		);
 
 		console.log('createBlog, newBlog', newBlog);
 
