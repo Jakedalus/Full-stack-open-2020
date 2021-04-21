@@ -80,7 +80,7 @@ const App = () => {
 				);
 				console.log('decodedToken', decodedToken);
 
-				dispatch(login(user));
+				dispatch(login({ ...user, id: decodedToken.id }));
 
 				// setUser({ ...user, id: decodedToken.id });
 			}

@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const Blog = ({
-	blog,
-	editBlog,
-	deleteBlog,
-	currentUser
-}) => {
+const Blog = ({ blog, editBlog, deleteBlog }) => {
 	const [ showDetails, setShowDetails ] = useState(false);
 
 	const dispatch = useDispatch();
+
+	const currentUser = useSelector(state => state.user);
 
 	// console.log('blog', blog);
 	// console.log('currentUser', currentUser);
@@ -44,6 +41,12 @@ const Blog = ({
 		console.log('deleting!');
 		deleteBlog(id, title, author);
 	};
+
+	console.log(
+		'Blog, currentUser and blog post user',
+		currentUser,
+		user.id
+	);
 
 	return (
 		<div className='blog-listing'>

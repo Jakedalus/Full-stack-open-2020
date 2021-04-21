@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import loginService from '../services/login';
 
 // try {
@@ -56,11 +57,17 @@ export const loginUser = credentials => {
 				JSON.stringify(user)
 			);
 
+			const decodedToken = jwt.verify(
+				user.token,
+				process.env.REACT_APP_SECRET
+			);
+
 			// dispatch({
 			// 	type : 'LOGIN',
 			// 	data : user
 			// });
-			dispatch(login(user));
+
+			dispatch(login({ ...user, id: decodedToken.id }));
 		} catch (exception) {
 			console.log('exception', exception);
 			dispatch({
