@@ -13,7 +13,7 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 import './App.css';
 import { initializeBlogs } from './reducers/blogReducer';
-import { login } from './reducers/userReducer';
+import { login, logout } from './reducers/userReducer';
 
 // "username": "sample_username99",
 // "password": "samplesample"
@@ -233,6 +233,9 @@ const App = () => {
 
 	const handleLogout = e => {
 		window.localStorage.removeItem('loggedInUser');
+
+		dispatch(logout());
+
 		// setUser(null);
 	};
 

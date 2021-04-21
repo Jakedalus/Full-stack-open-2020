@@ -33,6 +33,14 @@ export const login = user => {
 		});
 };
 
+export const logout = () => {
+	console.log(`logout`);
+	return dispatch =>
+		dispatch({
+			type : 'LOGOUT'
+		});
+};
+
 export const loginUser = credentials => {
 	console.log('loginUser', credentials);
 
@@ -73,8 +81,8 @@ const reducer = (state = [], action) => {
 	switch (action.type) {
 		case 'LOGIN':
 			return action.data;
-		case 'SET_USER':
-			return action.data;
+		case 'LOGOUT':
+			return [];
 		default:
 			return state;
 	}
