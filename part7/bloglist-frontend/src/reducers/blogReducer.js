@@ -20,6 +20,37 @@ export const createBlog = (data, config) => {
 	};
 };
 
+export const editBlog = (id, updates, config) => {
+	console.log(`editBlog`, id, updates, config);
+
+	return async dispatch => {
+		console.log('editing blog...');
+		try {
+			const updatedBlog = await blogService.updateBlog(
+				id,
+				updates,
+				config
+			);
+
+			console.log(`updatedBlog`, updatedBlog);
+
+			dispatch({
+				type : 'UPDATE_BLOG',
+				data : updatedBlog
+			});
+		} catch (exception) {
+			console.log('exception', exception);
+			dispatch({
+				type : 'NEW_NOTIFICATION',
+				data : {
+					message : 'Wrong credentials',
+					type    : 'error'
+				}
+			});
+		}
+	};
+};
+
 export const initializeBlogs = () => {
 	console.log('initializeBlogs');
 
@@ -45,6 +76,13 @@ const reducer = (state = [], action) => {
 	switch (action.type) {
 		case 'NEW_BLOG':
 			return [ ...state, { ...action.data } ];
+		case 'UPDATE_BLOG':
+			return state.map(
+				blog =>
+					blog.id === action.data.id
+						? { ...action.data }
+						: blog
+			);
 		case 'INIT_BLOGS':
 			return action.data;
 		default:

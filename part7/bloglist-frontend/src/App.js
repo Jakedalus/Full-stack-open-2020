@@ -11,7 +11,10 @@ import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
 import blogService from './services/blogs';
 import './App.css';
-import { initializeBlogs } from './reducers/blogReducer';
+import {
+	initializeBlogs,
+	editBlog
+} from './reducers/blogReducer';
 import { login, logout } from './reducers/userReducer';
 import { setNotification } from './reducers/notificationReducer';
 
@@ -120,52 +123,52 @@ const App = () => {
 	// 	});
 	// };
 
-	const editBlog = async (id, blogObject) => {
-		try {
-			const updatedBlog = await blogService.updateBlog(
-				id,
-				blogObject,
-				{
-					headers : {
-						Authorization : `bearer ${user.token}`
-					}
-				}
-			);
+	// const editBlog = async (id, blogObject) => {
+	// 	try {
+	// 		const updatedBlog = await blogService.updateBlog(
+	// 			id,
+	// 			blogObject,
+	// 			{
+	// 				headers : {
+	// 					Authorization : `bearer ${user.token}`
+	// 				}
+	// 			}
+	// 		);
 
-			console.log(
-				'App.js, editBlog, updatedBlog',
-				updatedBlog
-			);
+	// 		console.log(
+	// 			'App.js, editBlog, updatedBlog',
+	// 			updatedBlog
+	// 		);
 
-			console.log('{ ...updatedBlog, user: user.name }', {
-				...updatedBlog,
-				user : user
-			});
+	// 		console.log('{ ...updatedBlog, user: user.name }', {
+	// 			...updatedBlog,
+	// 			user : user
+	// 		});
 
-			const updatedBlogs = blogs.map(
-				blog =>
-					blog.id === id
-						? { ...updatedBlog, user: user }
-						: blog
-			);
+	// 		const updatedBlogs = blogs.map(
+	// 			blog =>
+	// 				blog.id === id
+	// 					? { ...updatedBlog, user: user }
+	// 					: blog
+	// 		);
 
-			const tempBlogs = [ ...updatedBlogs ].sort(
-				(a, b) => +b.likes - +a.likes
-			);
+	// 		const tempBlogs = [ ...updatedBlogs ].sort(
+	// 			(a, b) => +b.likes - +a.likes
+	// 		);
 
-			// setBlogs(tempBlogs);
+	// 		// setBlogs(tempBlogs);
 
-			displayNotification({
-				message : `the blog ${updatedBlog.title} by ${updatedBlog.author} has been updated`,
-				type    : 'success'
-			});
-		} catch (e) {
-			displayNotification({
-				message : `failed to update blog`,
-				type    : 'error'
-			});
-		}
-	};
+	// 		displayNotification({
+	// 			message : `the blog ${updatedBlog.title} by ${updatedBlog.author} has been updated`,
+	// 			type    : 'success'
+	// 		});
+	// 	} catch (e) {
+	// 		displayNotification({
+	// 			message : `failed to update blog`,
+	// 			type    : 'error'
+	// 		});
+	// 	}
+	// };
 
 	const deleteBlog = async (id, title, author) => {
 		const shouldDeleteBlog = window.confirm(

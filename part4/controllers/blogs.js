@@ -156,7 +156,7 @@ blogsRouter.put('/:id', async (request, response) => {
 				{
 					new : true
 				}
-			);
+			).populate('user');
 
 			console.log('updatedBlog', updatedBlog);
 

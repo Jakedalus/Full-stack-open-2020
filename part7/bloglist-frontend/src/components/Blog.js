@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 const Blog = ({
@@ -9,21 +10,34 @@ const Blog = ({
 }) => {
 	const [ showDetails, setShowDetails ] = useState(false);
 
+	const dispatch = useDispatch();
+
 	// console.log('blog', blog);
 	// console.log('currentUser', currentUser);
 
 	const { title, author, url, likes, id, user } = blog;
 
 	const handleAddLike = () => {
-		editBlog(id, {
+		console.log(
+			'handleAddLike',
 			title,
 			author,
 			url,
 			id,
 			user,
-			likes  : likes + 1,
-			type   : 'add-like'
-		});
+			likes
+		);
+		dispatch(
+			editBlog(id, {
+				title,
+				author,
+				url,
+				id,
+				user,
+				likes  : likes + 1,
+				type   : 'add-like'
+			})
+		);
 	};
 
 	const handleClickDelete = () => {
