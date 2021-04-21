@@ -20,16 +20,15 @@ export const createBlog = (data, config) => {
 	};
 };
 
-export const editBlog = (id, updates, config) => {
-	console.log(`editBlog`, id, updates, config);
+export const addLike = (id, updates) => {
+	console.log(`addLike`, id, updates);
 
 	return async dispatch => {
 		console.log('editing blog...');
 		try {
 			const updatedBlog = await blogService.updateBlog(
 				id,
-				updates,
-				config
+				updates
 			);
 
 			console.log(`updatedBlog`, updatedBlog);
@@ -44,6 +43,41 @@ export const editBlog = (id, updates, config) => {
 				type : 'NEW_NOTIFICATION',
 				data : {
 					message : 'Wrong credentials',
+					type    : 'error'
+				}
+			});
+		}
+	};
+};
+
+export const removeBlog = (id, config) => {
+	console.log(`removeBlog`, id, config);
+	return async dispatch => {
+		try {
+			const deletedBlog = await blogService.deleteBlog(
+				id,
+				config
+			);
+
+			console.log('deletedBlog', deletedBlog);
+
+			dispatch({
+				type : 'DELETE_BLOG',
+				data : deletedBlog
+			});
+
+			// dispatch({
+			// 	type : 'NEW_NOTIFICATION',
+			// 	data : {
+			// 		message : `the blog ${deletedBlog.title} has been deleted`,
+			// 		type    : 'success'
+			// 	}
+			// });
+		} catch (e) {
+			dispatch({
+				type : 'NEW_NOTIFICATION',
+				data : {
+					message : `failed to delete blog`,
 					type    : 'error'
 				}
 			});
@@ -82,6 +116,10 @@ const reducer = (state = [], action) => {
 					blog.id === action.data.id
 						? { ...action.data }
 						: blog
+			);
+		case 'DELETE_BLOG':
+			return state.filter(
+				blog => blog.id !== action.data.id
 			);
 		case 'INIT_BLOGS':
 			return action.data;

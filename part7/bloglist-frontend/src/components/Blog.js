@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-const Blog = ({ blog, editBlog, deleteBlog }) => {
+const Blog = ({ blog, addLike, deleteBlog }) => {
 	const [ showDetails, setShowDetails ] = useState(false);
 
 	const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Blog = ({ blog, editBlog, deleteBlog }) => {
 			likes
 		);
 		dispatch(
-			editBlog(id, {
+			addLike(id, {
 				title,
 				author,
 				url,
@@ -42,11 +42,11 @@ const Blog = ({ blog, editBlog, deleteBlog }) => {
 		deleteBlog(id, title, author);
 	};
 
-	console.log(
-		'Blog, currentUser and blog post user',
-		currentUser,
-		user.id
-	);
+	// console.log(
+	// 	'Blog, currentUser and blog post user',
+	// 	currentUser,
+	// 	user.id
+	// );
 
 	return (
 		<div className='blog-listing'>
@@ -75,7 +75,7 @@ const Blog = ({ blog, editBlog, deleteBlog }) => {
 
 Blog.propTypes = {
 	blog        : PropTypes.object.isRequired,
-	editBlog    : PropTypes.func.isRequired,
+	addLike     : PropTypes.func.isRequired,
 	deleteBlog  : PropTypes.func.isRequired,
 	currentUser : PropTypes.object
 };

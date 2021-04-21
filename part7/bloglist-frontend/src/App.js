@@ -9,11 +9,11 @@ import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
 import Notification from './components/Notification';
-import blogService from './services/blogs';
 import './App.css';
 import {
 	initializeBlogs,
-	editBlog
+	addLike,
+	removeBlog
 } from './reducers/blogReducer';
 import { login, logout } from './reducers/userReducer';
 import { setNotification } from './reducers/notificationReducer';
@@ -177,39 +177,21 @@ const App = () => {
 			`Do you really want to delete ${title} by ${author}?`
 		);
 
+		const headers = {
+			headers : { Authorization: `bearer ${user.token}` }
+		};
+
 		if (shouldDeleteBlog) {
-			try {
-				const deletedBlog = await blogService.deleteBlog(
-					id,
+			dispatch(removeBlog(id, headers));
+			dispatch(
+				setNotification(
 					{
-						headers : {
-							Authorization : `bearer ${user.token}`
-						}
-					}
-				);
-
-				console.log('deletedBlog', deletedBlog);
-
-				const updatedBlogs = blogs.filter(
-					blog => blog.id !== id
-				);
-
-				const tempBlogs = [ ...updatedBlogs ].sort(
-					(a, b) => +b.likes - +a.likes
-				);
-
-				// setBlogs(tempBlogs);
-
-				displayNotification({
-					message : `the blog ${deletedBlog.title} has been deleted`,
-					type    : 'success'
-				});
-			} catch (e) {
-				displayNotification({
-					message : `failed to update blog`,
-					type    : 'error'
-				});
-			}
+						message : `the blog ${title} has been deleted`,
+						type    : 'success'
+					},
+					5000
+				)
+			);
 		}
 	};
 
@@ -290,7 +272,7 @@ const App = () => {
 							<Blog
 								key={blog.id}
 								blog={blog}
-								editBlog={editBlog}
+								addLike={addLike}
 								deleteBlog={deleteBlog}
 								currentUser={user}
 							/>
