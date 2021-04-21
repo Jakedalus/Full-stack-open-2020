@@ -24,7 +24,9 @@ import { setNotification } from './reducers/notificationReducer';
 const App = () => {
 	const dispatch = useDispatch();
 
-	const blogs = useSelector(state => state.blogs);
+	const blogs = useSelector(state => state.blogs).sort(
+		(a, b) => +b.likes - +a.likes
+	);
 	const user = useSelector(state => state.user);
 	const notification = useSelector(
 		state => state.notification
