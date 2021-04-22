@@ -16,6 +16,7 @@ import jwt from 'jsonwebtoken';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
+import BlogList from './components/BlogList';
 import Notification from './components/Notification';
 import './App.css';
 import {
@@ -180,29 +181,6 @@ const App = () => {
 	// 	}
 	// };
 
-	const deleteBlog = async (id, title, author) => {
-		const shouldDeleteBlog = window.confirm(
-			`Do you really want to delete ${title} by ${author}?`
-		);
-
-		const headers = {
-			headers : { Authorization: `bearer ${user.token}` }
-		};
-
-		if (shouldDeleteBlog) {
-			dispatch(removeBlog(id, headers));
-			dispatch(
-				setNotification(
-					{
-						message : `the blog ${title} has been deleted`,
-						type    : 'success'
-					},
-					5000
-				)
-			);
-		}
-	};
-
 	// const handleLogin = async e => {
 	// 	e.preventDefault();
 	// 	console.log('logging in with: ', username, password);
@@ -280,17 +258,7 @@ const App = () => {
 							<div>Users</div>
 						</Route>
 						<Route path={[ '/blogs', '/' ]}>
-							<div id='blog-list'>
-								{blogs.map(blog => (
-									<Blog
-										key={blog.id}
-										blog={blog}
-										addLike={addLike}
-										deleteBlog={deleteBlog}
-										currentUser={user}
-									/>
-								))}
-							</div>
+							<BlogList blogs={blogs} user={user} />
 						</Route>
 					</Switch>
 				</div>
