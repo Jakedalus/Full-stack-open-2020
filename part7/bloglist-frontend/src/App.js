@@ -17,6 +17,7 @@ import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
 import BlogList from './components/BlogList';
+import UserList from './components/UserList';
 import Notification from './components/Notification';
 import './App.css';
 import {
@@ -255,7 +256,7 @@ const App = () => {
 					)}
 					<Switch>
 						<Route path='/users'>
-							<div>Users</div>
+							<UserList />
 						</Route>
 						<Route path={[ '/blogs', '/' ]}>
 							<BlogList blogs={blogs} user={user} />

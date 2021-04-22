@@ -1,29 +1,6 @@
 import jwt from 'jsonwebtoken';
 import loginService from '../services/login';
-
-// try {
-// 	const user = await loginService.login({
-// 		username,
-// 		password
-// 	});
-
-// 	window.localStorage.setItem(
-// 		'loggedInUser',
-// 		JSON.stringify(user)
-// 	);
-
-// 	setUser(user);
-// 	setUsername('');
-// 	setPassword('');
-
-// 	console.log('user', user);
-// } catch (exception) {
-// 	console.log('exception', exception);
-// 	displayNotification({
-// 		message : 'Wrong credentials',
-// 		type    : 'error'
-// 	});
-// }
+import { setNotification } from './notificationReducer';
 
 export const login = user => {
 	console.log(`login, user`, user);
@@ -70,13 +47,22 @@ export const loginUser = credentials => {
 			dispatch(login({ ...user, id: decodedToken.id }));
 		} catch (exception) {
 			console.log('exception', exception);
-			dispatch({
-				type : 'NEW_NOTIFICATION',
-				data : {
-					message : 'Wrong credentials',
-					type    : 'error'
-				}
-			});
+			dispatch(
+				setNotification(
+					{
+						message : 'Wrong credentials',
+						type    : 'error'
+					},
+					5000
+				)
+			);
+			// dispatch({
+			// 	type : 'NEW_NOTIFICATION',
+			// 	notification : {
+			// 		message : 'Wrong credentials',
+			// 		type    : 'error'
+			// 	}
+			// });
 		}
 	};
 };
