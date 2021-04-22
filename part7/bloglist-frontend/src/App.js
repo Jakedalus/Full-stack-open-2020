@@ -4,6 +4,14 @@ import React, {
 	useLayoutEffect
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+	Switch,
+	Route,
+	Link,
+	// useParams,
+	useRouteMatch,
+	useHistory
+} from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
@@ -267,17 +275,24 @@ const App = () => {
 							new note
 						</button>
 					)}
-					<div id='blog-list'>
-						{blogs.map(blog => (
-							<Blog
-								key={blog.id}
-								blog={blog}
-								addLike={addLike}
-								deleteBlog={deleteBlog}
-								currentUser={user}
-							/>
-						))}
-					</div>
+					<Switch>
+						<Route path='/users'>
+							<div>Users</div>
+						</Route>
+						<Route path={[ '/blogs', '/' ]}>
+							<div id='blog-list'>
+								{blogs.map(blog => (
+									<Blog
+										key={blog.id}
+										blog={blog}
+										addLike={addLike}
+										deleteBlog={deleteBlog}
+										currentUser={user}
+									/>
+								))}
+							</div>
+						</Route>
+					</Switch>
 				</div>
 			)}
 		</div>
