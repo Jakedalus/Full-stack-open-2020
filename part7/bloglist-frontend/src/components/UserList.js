@@ -4,21 +4,10 @@ import React, {
 	useLayoutEffect
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllUsers } from '../reducers/usersReducer';
+import { Link } from 'react-router-dom';
 
-const UserList = () => {
-	const dispatch = useDispatch();
-	const users = useSelector(state => state.users);
-
+const UserList = ({ users }) => {
 	console.log(`users`, users);
-
-	useEffect(
-		() => {
-			dispatch(getAllUsers());
-		},
-		[ dispatch ]
-	);
-
 	return (
 		<div>
 			<h2>Users</h2>
@@ -33,7 +22,9 @@ const UserList = () => {
 					{users.map(user => (
 						<tr>
 							<td>
-								{user.username} - {user.name}
+								<Link to={`/users/${user.id}`}>
+									{user.username} - {user.name}
+								</Link>
 							</td>
 							<td>{user.blogs.length}</td>
 						</tr>

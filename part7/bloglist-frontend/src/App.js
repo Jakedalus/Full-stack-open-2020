@@ -18,6 +18,7 @@ import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
 import BlogList from './components/BlogList';
 import UserList from './components/UserList';
+import UserPage from './components/UserPage';
 import Notification from './components/Notification';
 import './App.css';
 import {
@@ -27,12 +28,25 @@ import {
 } from './reducers/blogReducer';
 import { login, logout } from './reducers/userReducer';
 import { setNotification } from './reducers/notificationReducer';
+import { getAllUsers } from './reducers/usersReducer';
 
 // "username": "sample_username99",
 // "password": "samplesample"
 
 const App = () => {
 	const dispatch = useDispatch();
+
+	const users = useSelector(state => {
+		console.log(`state`, state);
+		return state.users;
+	});
+
+	const match = useRouteMatch('/users/:id');
+	const userPage = match
+		? users.find(user => user.id === match.params.id)
+		: null;
+
+	console.log(`users`, users);
 
 	const blogs = useSelector(state => state.blogs).sort(
 		(a, b) => +b.likes - +a.likes
@@ -53,6 +67,13 @@ const App = () => {
 		setCreateBlogFormVisible
 	] = useState(false);
 
+	// useEffect(
+	// 	() => {
+	// 		dispatch(getAllUsers());
+	// 	},
+	// 	[ dispatch ]
+	// );
+
 	useEffect(
 		() => {
 			// async function fetchBlogs() {
@@ -61,11 +82,12 @@ const App = () => {
 			// 	setBlogs(tempBlogs);
 			// }
 			// fetchBlogs();
-			console.log(
-				`Initialize Blogs!`,
-				dispatch,
-				initializeBlogs
-			);
+			// console.log(
+			// 	`Initialize Blogs!`,
+			// 	dispatch,
+			// 	initializeBlogs
+			// );
+			dispatch(getAllUsers());
 			dispatch(initializeBlogs());
 		},
 		[ dispatch ]
@@ -225,13 +247,7 @@ const App = () => {
 				<Notification notification={notification} />
 			)}
 			{user.length === 0 ? (
-				<LoginForm
-				// username={username}
-				// password={password}
-				// setUsername={setUsername}
-				// setPassword={setPassword}
-				// handleLogin={handleLogin}
-				/>
+				<LoginForm />
 			) : (
 				<div>
 					<h2>
@@ -255,8 +271,11 @@ const App = () => {
 						</button>
 					)}
 					<Switch>
+						<Route path='/users/:id'>
+							<UserPage user={userPage} />
+						</Route>
 						<Route path='/users'>
-							<UserList />
+							<UserList users={users} />
 						</Route>
 						<Route path={[ '/blogs', '/' ]}>
 							<BlogList blogs={blogs} user={user} />
