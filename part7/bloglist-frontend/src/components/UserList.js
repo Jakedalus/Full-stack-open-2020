@@ -22,11 +22,24 @@ const UserList = () => {
 	return (
 		<div>
 			<h2>Users</h2>
-			{users.map(user => (
-				<div>
-					{user.username} - {user.name}
-				</div>
-			))}
+			<table>
+				<thead>
+					<tr>
+						<th />
+						<th>blogs created</th>
+					</tr>
+				</thead>
+				<tbody>
+					{users.map(user => (
+						<tr>
+							<td>
+								{user.username} - {user.name}
+							</td>
+							<td>{user.blogs.length}</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	);
 };
