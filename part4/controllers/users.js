@@ -20,6 +20,8 @@ userRouter.post('/', async (request, response) => {
 
 	const { username, name, password } = body;
 
+	console.log(`username, name`, username, name);
+
 	if (!username || !password) {
 		response.status(400).json({
 			error : 'must include name and password'
