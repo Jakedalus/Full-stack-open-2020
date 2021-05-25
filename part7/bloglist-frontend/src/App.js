@@ -21,6 +21,7 @@ import UserList from './components/UserList';
 import UserPage from './components/UserPage';
 import BlogPage from './components/BlogPage';
 import Notification from './components/Notification';
+import Header from './components/Header';
 import './App.css';
 import {
 	initializeBlogs,
@@ -261,10 +262,7 @@ const App = () => {
 				<LoginForm />
 			) : (
 				<div>
-					<h2>
-						{user.name} is logged in
-						<button onClick={handleLogout}>logout</button>
-					</h2>
+					<Header user={user} handleLogout={handleLogout} />
 					{createBlogFormVisible && (
 						<NewBlogForm
 							// createBlog={createBlog}
