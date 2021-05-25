@@ -19,6 +19,7 @@ import NewBlogForm from './components/NewBlogForm';
 import BlogList from './components/BlogList';
 import UserList from './components/UserList';
 import UserPage from './components/UserPage';
+import BlogPage from './components/BlogPage';
 import Notification from './components/Notification';
 import './App.css';
 import {
@@ -41,13 +42,6 @@ const App = () => {
 		return state.users;
 	});
 
-	const match = useRouteMatch('/users/:id');
-	const userPage = match
-		? users.find(user => user.id === match.params.id)
-		: null;
-
-	console.log(`users`, users);
-
 	const blogs = useSelector(state => state.blogs).sort(
 		(a, b) => +b.likes - +a.likes
 	);
@@ -55,6 +49,23 @@ const App = () => {
 	const notification = useSelector(
 		state => state.notification
 	);
+
+	const userMatch = useRouteMatch('/users/:id');
+	const userPage = userMatch
+		? users.find(user => user.id === userMatch.params.id)
+		: null;
+
+	const blogMatch = useRouteMatch('/blogs/:id');
+	console.log(`blogMatch`, blogMatch);
+	const blogPage = blogMatch
+		? blogs.find(blog => blog.id === blogMatch.params.id)
+		: null;
+
+	console.log(`blogPage`, blogPage);
+
+	console.log(`users`, users);
+
+	console.log(`blogs`, blogs);
 
 	console.log(`user`, user);
 
@@ -276,6 +287,9 @@ const App = () => {
 						</Route>
 						<Route path='/users'>
 							<UserList users={users} />
+						</Route>
+						<Route path='/blogs/:id'>
+							<BlogPage blog={blogPage} />
 						</Route>
 						<Route path={[ '/blogs', '/' ]}>
 							<BlogList blogs={blogs} user={user} />
