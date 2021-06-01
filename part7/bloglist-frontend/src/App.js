@@ -258,6 +258,8 @@ const App = () => {
 		margin: 0;
 	`;
 
+	const ContainerDiv = styled.div`padding: 10px;`;
+
 	return (
 		<StyledDiv>
 			{notification && (
@@ -268,37 +270,40 @@ const App = () => {
 			) : (
 				<div>
 					<Header user={user} handleLogout={handleLogout} />
-					<h1>Blogs!</h1>
-					{createBlogFormVisible && (
-						<NewBlogForm
-							// createBlog={createBlog}
-							displayNotification={displayNotification}
-							setCreateBlogFormVisible={
-								setCreateBlogFormVisible
-							}
-						/>
-					)}
-					{!createBlogFormVisible && (
-						<button
-							onClick={() => setCreateBlogFormVisible(true)}
-						>
-							new blog
-						</button>
-					)}
-					<Switch>
-						<Route path='/users/:id'>
-							<UserPage user={userPage} />
-						</Route>
-						<Route path='/users'>
-							<UserList users={users} />
-						</Route>
-						<Route path='/blogs/:id'>
-							<BlogPage blog={blogPage} />
-						</Route>
-						<Route path={[ '/blogs', '/' ]}>
-							<BlogList blogs={blogs} user={user} />
-						</Route>
-					</Switch>
+					<ContainerDiv>
+						<h1>Blogs!</h1>
+						{createBlogFormVisible && (
+							<NewBlogForm
+								// createBlog={createBlog}
+								displayNotification={displayNotification}
+								setCreateBlogFormVisible={
+									setCreateBlogFormVisible
+								}
+							/>
+						)}
+						{!createBlogFormVisible && (
+							<button
+								onClick={() =>
+									setCreateBlogFormVisible(true)}
+							>
+								new blog
+							</button>
+						)}
+						<Switch>
+							<Route path='/users/:id'>
+								<UserPage user={userPage} />
+							</Route>
+							<Route path='/users'>
+								<UserList users={users} />
+							</Route>
+							<Route path='/blogs/:id'>
+								<BlogPage blog={blogPage} />
+							</Route>
+							<Route path={[ '/blogs', '/' ]}>
+								<BlogList blogs={blogs} user={user} />
+							</Route>
+						</Switch>
+					</ContainerDiv>
 				</div>
 			)}
 		</StyledDiv>

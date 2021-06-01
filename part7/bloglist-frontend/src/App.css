@@ -5,6 +5,16 @@ ul {
 
 button {
 	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	height: 30px;
+	background-color: dimgray;
+	color: white;
+}
+
+button.primary {
+	background-color: darkblue;
+	color: white;
 }
 
 .notification {
@@ -33,13 +43,6 @@ button {
 .blog-listing button {
 	width: 60px;
 	padding: 1px 5px;
-}
-
-.blog-listing {
-	margin-bottom: 10px;
-	padding: 5px;
-	border: 2px solid black;
-	border-radius: 5px;
 }
 
 .blog-listing--details {

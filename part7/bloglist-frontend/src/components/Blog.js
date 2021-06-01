@@ -2,6 +2,18 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledDiv = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 350px;
+	margin: 10px 0;
+	padding: 5px;
+	border: 3px solid black;
+	border-radius: 5px;
+`;
 
 const Blog = ({ blog, addLike, deleteBlog }) => {
 	const [ showDetails, setShowDetails ] = useState(false);
@@ -50,7 +62,10 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
 	// );
 
 	return (
-		<div className='blog-listing'>
+		<StyledDiv
+			className='blog-listing'
+			showDetails={showDetails}
+		>
 			<Link to={`/blogs/${blog.id}`}>
 				{title} by {author}
 			</Link>
@@ -72,7 +87,7 @@ const Blog = ({ blog, addLike, deleteBlog }) => {
 					)}
 				</div>
 			)}
-		</div>
+		</StyledDiv>
 	);
 };
 

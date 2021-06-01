@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import { createBlog } from '../reducers/blogReducer';
+
+const StyledForm = styled.form`
+	display: flex;
+	justify-content: space-around;
+	height: 300px;
+	padding: 10px 0;
+
+	input,
+	button {
+		height: 40px;
+	}
+`;
 
 const NewBlogForm = ({
 	setCreateBlogFormVisible,
@@ -53,7 +66,7 @@ const NewBlogForm = ({
 	};
 
 	return (
-		<form
+		<StyledForm
 			className='new-blog-form'
 			onSubmit={handleAddBlog}
 		>
@@ -81,14 +94,16 @@ const NewBlogForm = ({
 				id='url'
 				onChange={({ target }) => setUrl(target.value)}
 			/>
-			<button type='submit'>create</button>
+			<button className='primary' type='submit'>
+				create
+			</button>
 			<button
 				type='button'
 				onClick={() => setCreateBlogFormVisible(false)}
 			>
 				cancel
 			</button>
-		</form>
+		</StyledForm>
 	);
 };
 
