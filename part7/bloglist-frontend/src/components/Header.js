@@ -32,6 +32,11 @@ const InnerNav = styled.div`
 	justify-content: space-between;
 	align-items: center;
 	width: 10%;
+
+	a {
+		text-decoration: none;
+		color: darkblue;
+	}
 `;
 
 const Header = ({ user, handleLogout }) => {

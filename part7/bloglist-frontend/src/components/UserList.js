@@ -1,17 +1,26 @@
-import React, {
-	useState,
-	useEffect,
-	useLayoutEffect
-} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+const StyledTable = styled.table`
+	background-color: aqua;
+	padding: 10px;
+	border: 3px solid black;
+	border-radius: 5px;
+
+	th,
+	td {
+		border: 1px solid black;
+		padding: 4px 6px;
+	}
+`;
 
 const UserList = ({ users }) => {
 	console.log(`users`, users);
 	return (
 		<div>
 			<h2>Users</h2>
-			<table>
+			<StyledTable>
 				<thead>
 					<tr>
 						<th />
@@ -30,7 +39,7 @@ const UserList = ({ users }) => {
 						</tr>
 					))}
 				</tbody>
-			</table>
+			</StyledTable>
 		</div>
 	);
 };
