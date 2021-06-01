@@ -13,6 +13,7 @@ import {
 	useHistory
 } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
+import styled from 'styled-components';
 import Blog from './components/Blog';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
@@ -252,9 +253,13 @@ const App = () => {
 		// setUser(null);
 	};
 
+	const StyledDiv = styled.div`
+		padding: 0;
+		margin: 0;
+	`;
+
 	return (
-		<div>
-			<h1>Blogs!</h1>
+		<StyledDiv>
 			{notification && (
 				<Notification notification={notification} />
 			)}
@@ -263,6 +268,7 @@ const App = () => {
 			) : (
 				<div>
 					<Header user={user} handleLogout={handleLogout} />
+					<h1>Blogs!</h1>
 					{createBlogFormVisible && (
 						<NewBlogForm
 							// createBlog={createBlog}
@@ -276,7 +282,7 @@ const App = () => {
 						<button
 							onClick={() => setCreateBlogFormVisible(true)}
 						>
-							new note
+							new blog
 						</button>
 					)}
 					<Switch>
@@ -295,7 +301,7 @@ const App = () => {
 					</Switch>
 				</div>
 			)}
-		</div>
+		</StyledDiv>
 	);
 };
 
