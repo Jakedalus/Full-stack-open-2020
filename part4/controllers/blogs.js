@@ -138,10 +138,11 @@ blogsRouter.put('/:id', async (request, response) => {
 	const body = request.body;
 	const type = request.body.type;
 	const newBlog = {
-		title  : body.title,
-		author : body.author,
-		url    : body.url,
-		likes  : body.likes
+		title    : body.title,
+		author   : body.author,
+		url      : body.url,
+		likes    : body.likes,
+		comments : body.comments
 	};
 	console.log('body', body);
 	console.log('newBlog', newBlog);
@@ -241,5 +242,60 @@ blogsRouter.put('/:id', async (request, response) => {
 		// }
 	}
 });
+
+blogsRouter.post(
+	'/:id/comments',
+	async (request, response) => {
+		const body = request.body;
+
+		const comment = body.comment;
+
+		console.log(`body`, body);
+
+		console.log(`comment`, comment);
+
+		const blogToUpdate = await Blog.findById(
+			request.params.id
+		);
+
+		console.log(`blogToUpdate`, blogToUpdate);
+
+		const newComments = blogToUpdate.comments
+			? [ ...blogToUpdate.comments, comment ]
+			: [ comment ];
+
+		console.log(`newComments`, newComments);
+
+		const newBlog = {
+			title    : blogToUpdate.title,
+			author   : blogToUpdate.author,
+			url      : blogToUpdate.url,
+			likes    : blogToUpdate.likes,
+			comments : newComments
+		};
+
+		console.log(`newBlog`, newBlog);
+
+		if (blogToUpdate) {
+			const updatedBlog = await Blog.findByIdAndUpdate(
+				request.params.id,
+				newBlog,
+				{
+					new : true
+				}
+			).populate('user');
+
+			console.log('updatedBlog', updatedBlog);
+
+			if (updatedBlog) {
+				response.status(200).json(updatedBlog);
+			} else {
+				response.status(400).end();
+			}
+		} else {
+			response.status(400).end();
+		}
+	}
+);
 
 module.exports = blogsRouter;

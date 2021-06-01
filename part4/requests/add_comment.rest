@@ -1,0 +1,12 @@
+POST http://localhost:3001/api/blogs/5fdbe4bd3e2b501ba0c1ce0f/comments
+Content-Type: application/json
+# Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RfdXNlcm5hbWUiLCJpZCI6IjVmY2FiYWM1ZjIzM2EyZGRiOGExYWJiZiIsImlhdCI6MTYwODI0MTUwNH0.kCxZKa7xlAid32xzwse966xSQS5FWtY9nZOlVXJY2TI
+# Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZV91c2VybmFtZTk5IiwiaWQiOiI1ZmRiZDIwODEzNDgyZTEzNWE3OTM5M2UiLCJpYXQiOjE2MDgyNDE2OTF9.FTZo9CF_TsqnGBnfuP5gh7hhYx0NdSLwwI1HorfqmL0
+
+# Errors
+# Authorization: bearer eybGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbXBsZV91c2VybmFtZTk5IiwiaWQiOiI1ZmRiZDIwODEzNDgyZTEzNWE3OTM5M2UiLCJpYXQiOjE2MDgyNDE2OTF9.FTZo9CF_TsqnGBnfuP5gh7hhYx0NdSLwwI1HorfqmL0
+# Authorization: bearer alkdjfkadjlfkajd
+
+{
+  "comment": "this is a comment!"
+}
