@@ -50,6 +50,37 @@ export const addLike = (id, updates) => {
 	};
 };
 
+export const addComment = (id, comment) => {
+	console.log('addComment', id, comment);
+
+	return async dispatch => {
+		console.log('adding comment...');
+
+		try {
+			const updatedBlog = await blogService.createComment(
+				id,
+				comment
+			);
+
+			console.log(`updatedBlog`, updatedBlog);
+
+			dispatch({
+				type : 'UPDATE_BLOG',
+				data : updatedBlog
+			});
+		} catch (exception) {
+			console.log('exception', exception);
+			dispatch({
+				type : 'NEW_NOTIFICATION',
+				data : {
+					message : 'Wrong credentials',
+					type    : 'error'
+				}
+			});
+		}
+	};
+};
+
 export const removeBlog = (id, config) => {
 	console.log(`removeBlog`, id, config);
 	return async dispatch => {

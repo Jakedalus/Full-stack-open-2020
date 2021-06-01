@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addComment } from '../reducers/blogReducer';
 
 const BlogPage = ({ blog }) => {
 	console.log(`blog`, blog);
+
+	const dispatch = useDispatch();
 
 	const [ comment, setComment ] = useState('');
 
@@ -9,6 +13,9 @@ const BlogPage = ({ blog }) => {
 		e.preventDefault();
 
 		console.log(`comment`, comment);
+
+		dispatch(addComment(blog.id, comment));
+		setComment('');
 	};
 
 	return (
@@ -35,8 +42,10 @@ const BlogPage = ({ blog }) => {
 					</form>
 					{blog.comments.length > 0 && (
 						<ul>
-							{blog.comments.map(comment => (
-								<li>{comment}</li>
+							{blog.comments.map((comment, index) => (
+								<li key={`${comment} + ${index}`}>
+									{comment}
+								</li>
 							))}
 						</ul>
 					)}
