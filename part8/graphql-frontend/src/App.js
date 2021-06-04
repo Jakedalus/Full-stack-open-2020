@@ -1,5 +1,6 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
+import Persons from './Persons';
 
 const ALL_PERSONS = gql`
 	query {
@@ -17,17 +18,6 @@ function App() {
 	if (result.loading) {
 		return <div>loading...</div>;
 	}
-
-	const Persons = ({ persons }) => (
-		<div>
-			<h2>Persons</h2>
-			{result.data.allPersons.map(p => (
-				<div key={p.name}>
-					{p.name} {p.phone}
-				</div>
-			))}
-		</div>
-	);
 
 	return (
 		<div className='App'>
