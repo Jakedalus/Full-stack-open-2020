@@ -18,9 +18,20 @@ function App() {
 		return <div>loading...</div>;
 	}
 
+	const Persons = ({ persons }) => (
+		<div>
+			<h2>Persons</h2>
+			{result.data.allPersons.map(p => (
+				<div key={p.name}>
+					{p.name} {p.phone}
+				</div>
+			))}
+		</div>
+	);
+
 	return (
 		<div className='App'>
-			{result.data.allPersons.map(p => p.name).join(' ')}
+			<Persons persons={result.data.allPersons} />
 		</div>
 	);
 }
