@@ -182,12 +182,23 @@ const resolvers = {
 				author => author.name === args.name
 			);
 
+			const bookCount = books.filter(
+				book => book.author === author.name
+			).length;
+
+			console.log(`author`, author);
+
+			console.log(`bookCount`, bookCount);
+
 			if (!author) return null;
 
 			const updatedAuthor = {
 				...author,
-				born : args.setBornTo
+				bookCount,
+				born      : args.setBornTo
 			};
+
+			console.log(`updatedAuthor`, updatedAuthor);
 
 			authors = authors.map(
 				a => (a.name === args.name ? updatedAuthor : a)

@@ -20,6 +20,11 @@ const App = () => {
 		return <div>loading...</div>;
 	}
 
+	console.log(
+		`authorsResult.data.allAuthors`,
+		authorsResult.data.allAuthors
+	);
+
 	return (
 		<div>
 			<div>
